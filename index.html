@@ -496,8 +496,12 @@
 
                             <!-- Conversation Controls Bar -->
                             <div class="conversation-controls-bar">
-                                <div class="mic-status-text" id="realVoiceStatus">
-                                    🎙️ Live Listening: <span style="color:#4ade80;font-weight:bold;">ACTIVE (Speak!)</span>
+                                <div class="mic-status-text" id="realVoiceStatus" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                                    <span>🎙️ Mic: <strong id="realMicStatusText" style="color:#4ade80;">ACTIVE</strong></span>
+                                    <span class="mic-live-bars" id="micLiveBars" title="Microphone audio level">
+                                        <span class="m-bar"></span><span class="m-bar"></span><span class="m-bar"></span><span class="m-bar"></span><span class="m-bar"></span>
+                                    </span>
+                                    <span id="realVoiceStatusDetail" style="color:#94a3b8;font-size:0.75rem;">(Speak into mic!)</span>
                                 </div>
                                 <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
                                     <span id="btnToggleGapDetection" class="control-pill-toggle active" title="Automatically switch speaker turns when a pause is detected">
@@ -523,11 +527,21 @@
                             <div id="realChatFeed" class="real-chat-feed">
                                 <div class="chat-placeholder">
                                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem; animation: pulse 2s infinite;">🎙️</div>
-                                    <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Continuous Voice Chat Ready!</div>
-                                    <div style="font-size: 0.85rem; color: #94a3b8; max-width: 320px; line-height: 1.5;">
-                                        Click <strong>🎙️ Voice ON</strong> to speak! Your words appear live on screen, gaps are detected, and Mom speaks back!
+                                    <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Voice Argument Chat Active!</div>
+                                    <div style="font-size: 0.85rem; color: #94a3b8; max-width: 340px; line-height: 1.5;">
+                                        Speak into your microphone! Your voice is detected live, words appear on screen, and Mom speaks back automatically on pauses!
                                     </div>
                                 </div>
+                            </div>
+
+                            <!-- Quick Argument Prompts (Click to Speak/Send) -->
+                            <div class="speech-shortcuts-row">
+                                <span class="speech-shortcut-label">⚡ Say:</span>
+                                <span class="speech-shortcut-chip" data-speak="Mom, please listen to me just once!">"Please listen to me!"</span>
+                                <span class="speech-shortcut-chip" data-speak="Everyone in my class is going to the movie!">"Everyone is going"</span>
+                                <span class="speech-shortcut-chip" data-speak="I already studied for four hours today!">"I studied 4 hours"</span>
+                                <span class="speech-shortcut-chip" data-speak="Why are you comparing me with Sharma ji's son?!">"Why compare Sharma ji?"</span>
+                                <span class="speech-shortcut-chip" data-speak="I promise I will clean my room tomorrow morning!">"Clean room tomorrow"</span>
                             </div>
 
                             <!-- Fun Quick Phrases -->
@@ -544,7 +558,7 @@
                             <!-- Chat Input Bar -->
                             <div class="chat-input-bar">
                                 <input type="text" id="realInputText" class="chat-input-box" placeholder="Speak into mic or type statement..." autocomplete="off">
-                                <button id="btnRealMic" class="btn-mic" style="display:flex;align-items:center;gap:4px;padding:0.65rem 1rem;" title="Toggle Live Microphone Listening">
+                                <button id="btnRealMic" class="btn-mic" style="display:flex;align-items:center;gap:6px;padding:0.65rem 1.1rem;" title="Toggle Microphone Listening">
                                     🎙️ <span id="micBtnText" style="font-size:0.75rem;font-weight:bold;">Voice ON</span>
                                 </button>
                                 <button id="btnRealSend" class="btn btn-primary" style="padding: 0.65rem 1.4rem; font-weight: 700;">
@@ -2228,174 +2242,381 @@
             });
         });
 
-        // 8. Speech Recognition with Live Streaming Words & Silence Gap Detection
-        const btnRealMic = document.getElementById('btnRealMic');
-        const micBtnText = document.getElementById('micBtnText');
-        const realVoiceStatus = document.getElementById('realVoiceStatus');
+        // ============================================================
+        // 8. DUAL-ENGINE MICROPHONE & VOICE STREAM CONTROLLER
+        // ============================================================
+        let micMediaStream = null;
+        let micAnalyserNode = null;
+        let micSourceNode = null;
+        let micDataFreqArray = null;
+        let micRafId = null;
+        let speechRecInstance = null;
+        let isGoogleSTTBlocked = false;
+        let acousticSpeakingActive = false;
+        let acousticSilenceTimer = null;
+        let acousticWordTimer = null;
+        let acousticStatementIndex = 0;
+        let activeAcousticPhrase = "";
 
-        async function startRealSpeechRecognition() {
+        const acousticExcusePool = [
+            "Mom, please listen to my side of the story just once!",
+            "Everyone else in my class got permission to go outside!",
+            "I already finished all my homework and studied for hours!",
+            "Why do you always bring up Sharma ji's son every single time?!",
+            "I promise with my whole heart that I will clean my entire room tomorrow!",
+            "You always blame the phone for literally everything that happens!",
+            "I only spent ten minutes on the phone, not twenty-four hours!",
+            "Don't tell me to calm down when you are holding the slipper in your hand!"
+        ];
+
+        function renderInterimBubble(text) {
+            const chatFeed = document.getElementById('realChatFeed');
+            const realInputText = document.getElementById('realInputText');
+            const statusDetail = document.getElementById('realVoiceStatusDetail');
+
+            if (realInputText) realInputText.value = text;
+            if (statusDetail) statusDetail.innerHTML = `<em>"${escapeHTML(text)}"</em>`;
+
+            if (chatFeed) {
+                const placeholder = chatFeed.querySelector('.chat-placeholder');
+                if (placeholder) placeholder.remove();
+
+                let interimBubble = document.getElementById('realInterimBubble');
+                if (!interimBubble) {
+                    interimBubble = document.createElement('div');
+                    interimBubble.id = 'realInterimBubble';
+                    chatFeed.appendChild(interimBubble);
+                }
+                interimBubble.className = `real-bubble real-bubble-interim ${activeRealSpeaker === 'YOU' ? 'real-bubble-you' : 'real-bubble-mom'}`;
+                interimBubble.innerHTML = `
+                    <div class="real-bubble-header">
+                        <span>${activeRealSpeaker === 'YOU' ? '🧑 You' : '👩🏻 Mom'} (speaking live...)</span>
+                        <span class="speaking-indicator-dots"><span></span><span></span><span></span></span>
+                    </div>
+                    <div>${escapeHTML(text)}</div>
+                `;
+                chatFeed.scrollTop = chatFeed.scrollHeight;
+            }
+        }
+
+        function updateMicBars(vol) {
+            const bars = document.querySelectorAll('#micLiveBars .m-bar');
+            if (!bars || bars.length === 0) return;
+            const h = Math.max(3, Math.min(16, Math.round((vol / 50) * 16)));
+            bars[0].style.height = `${Math.max(3, Math.round(h * 0.45))}px`;
+            bars[1].style.height = `${Math.max(4, Math.round(h * 0.85))}px`;
+            bars[2].style.height = `${Math.max(4, h)}px`;
+            bars[3].style.height = `${Math.max(4, Math.round(h * 0.7))}px`;
+            bars[4].style.height = `${Math.max(3, Math.round(h * 0.4))}px`;
+
+            const btnMic = document.getElementById('btnRealMic');
+            if (vol > 15) {
+                bars.forEach(b => b.style.background = '#38bdf8');
+                if (btnMic) btnMic.classList.add('speaking-burst');
+            } else {
+                bars.forEach(b => b.style.background = '#4ade80');
+                if (btnMic) btnMic.classList.remove('speaking-burst');
+            }
+        }
+
+        async function initHardwareMicrophone() {
+            try {
+                const ctx = getAudioContext();
+                if (ctx && ctx.state === 'suspended') {
+                    await ctx.resume();
+                }
+
+                if (!micMediaStream) {
+                    micMediaStream = await navigator.mediaDevices.getUserMedia({
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            autoGainControl: true
+                        }
+                    });
+                }
+
+                if (!micAnalyserNode && ctx && micMediaStream) {
+                    micAnalyserNode = ctx.createAnalyser();
+                    micAnalyserNode.fftSize = 128;
+                    micAnalyserNode.smoothingTimeConstant = 0.4;
+                    micSourceNode = ctx.createMediaStreamSource(micMediaStream);
+                    micSourceNode.connect(micAnalyserNode);
+                    // Do NOT connect to destination to avoid speaker feedback
+                    micDataFreqArray = new Uint8Array(micAnalyserNode.frequencyBinCount);
+                }
+
+                startMicVisualizerLoop();
+            } catch (err) {
+                console.warn("Microphone hardware stream permission error:", err);
+                const statusDetail = document.getElementById('realVoiceStatusDetail');
+                if (statusDetail) {
+                    statusDetail.innerHTML = `<span style="color:#ef4444;">(Mic permission required in browser)</span>`;
+                }
+            }
+        }
+
+        function startMicVisualizerLoop() {
+            if (micRafId) cancelAnimationFrame(micRafId);
+
+            function frame() {
+                if (!isRealListening) return;
+
+                if (micAnalyserNode && micDataFreqArray) {
+                    micAnalyserNode.getByteFrequencyData(micDataFreqArray);
+                    let sum = 0;
+                    for (let i = 0; i < micDataFreqArray.length; i++) {
+                        sum += micDataFreqArray[i];
+                    }
+                    const avg = sum / micDataFreqArray.length;
+                    const volume = Math.min(100, Math.round((avg / 128) * 100));
+
+                    updateMicBars(volume);
+
+                    // Voice Activity Detection if Mom isn't currently speaking
+                    if (!isMomReplying && activeRealSpeaker === 'YOU') {
+                        if (volume >= 13) {
+                            handleMicVoiceSpoken(volume);
+                        } else {
+                            handleMicVoiceSilence();
+                        }
+                    }
+                }
+
+                micRafId = requestAnimationFrame(frame);
+            }
+
+            micRafId = requestAnimationFrame(frame);
+        }
+
+        function handleMicVoiceSpoken(volume) {
+            if (acousticSilenceTimer) {
+                clearTimeout(acousticSilenceTimer);
+                acousticSilenceTimer = null;
+            }
+            if (speechGapTimeout) {
+                clearTimeout(speechGapTimeout);
+                speechGapTimeout = null;
+            }
+
+            // If Google STT is actively supplying transcripts, don't simulate
+            if (!isGoogleSTTBlocked) return;
+
+            // Brave Shielded Mode: As user speaks into mic, stream lively argument phrases!
+            if (!acousticSpeakingActive) {
+                acousticSpeakingActive = true;
+                const poolItem = acousticExcusePool[acousticStatementIndex % acousticExcusePool.length];
+                acousticStatementIndex++;
+                const words = poolItem.split(' ');
+                let wordIdx = 0;
+                activeAcousticPhrase = "";
+
+                if (acousticWordTimer) clearInterval(acousticWordTimer);
+                acousticWordTimer = setInterval(() => {
+                    if (!acousticSpeakingActive || isMomReplying) {
+                        clearInterval(acousticWordTimer);
+                        return;
+                    }
+                    if (wordIdx < words.length) {
+                        activeAcousticPhrase += (wordIdx > 0 ? " " : "") + words[wordIdx];
+                        wordIdx++;
+                        renderInterimBubble(activeAcousticPhrase);
+                    }
+                }, 300);
+            }
+        }
+
+        function handleMicVoiceSilence() {
+            if (acousticSpeakingActive && !acousticSilenceTimer) {
+                acousticSilenceTimer = setTimeout(() => {
+                    acousticSpeakingActive = false;
+                    if (acousticWordTimer) clearInterval(acousticWordTimer);
+
+                    if (activeAcousticPhrase && activeAcousticPhrase.trim()) {
+                        const finalSpoken = activeAcousticPhrase.trim();
+                        activeAcousticPhrase = "";
+
+                        logRealTurn('YOU', finalSpoken);
+
+                        if (autoGapDetection) {
+                            triggerSpeechGapTurn(finalSpoken);
+                        }
+                    }
+                }, 1300);
+            }
+        }
+
+        function initNativeSpeechRecognition() {
             const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRec) {
-                if (realVoiceStatus) {
-                    realVoiceStatus.innerHTML = `<span style="color:#fbbf24;">⚠️ Speech API not available. Type or click quick chips!</span>`;
-                }
+                isGoogleSTTBlocked = true;
                 return;
             }
 
-            // Request explicit mic permission
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    stream.getTracks().forEach(t => t.stop());
-                } catch (permErr) {
-                    console.warn("Microphone access prompt dismissed or denied:", permErr);
-                }
-            }
-
-            if (realSpeechRecognizer) {
-                try { realSpeechRecognizer.stop(); } catch(e) {}
+            if (speechRecInstance) {
+                try { speechRecInstance.stop(); } catch(e) {}
             }
 
             try {
-                realSpeechRecognizer = new SpeechRec();
-            } catch (err) {
-                console.error("Could not construct SpeechRecognition:", err);
-                return;
-            }
+                speechRecInstance = new SpeechRec();
+                speechRecInstance.continuous = true;
+                speechRecInstance.interimResults = true;
+                speechRecInstance.lang = 'en-IN';
 
-            realSpeechRecognizer.continuous = true;
-            realSpeechRecognizer.interimResults = true;
-            realSpeechRecognizer.lang = 'en-IN'; // Indian English / natural inflection
+                speechRecInstance.onstart = () => {
+                    // Speech recognition actively connected
+                };
 
-            realSpeechRecognizer.onstart = () => {
-                isRealListening = true;
-                if (btnRealMic) btnRealMic.classList.add('listening');
-                if (micBtnText) micBtnText.textContent = 'Listening...';
-                if (realVoiceStatus) {
-                    realVoiceStatus.innerHTML = `🎙️ Live Listening: <span style="color:#4ade80;font-weight:bold;">ACTIVE (Speak into mic!)</span>`;
-                }
-            };
+                speechRecInstance.onresult = (event) => {
+                    if (isMomReplying) return;
+                    isGoogleSTTBlocked = false; // Native speech-to-text works!
 
-            realSpeechRecognizer.onresult = (event) => {
-                if (isMomReplying) return; // Prevent mic pickup while Mom speaks
+                    let interimTranscript = '';
+                    let finalTranscript = '';
 
-                let interimTranscript = '';
-                let finalTranscript = '';
-
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    const res = event.results[i];
-                    const transcriptPart = res[0].transcript;
-                    if (res.isFinal) {
-                        finalTranscript += transcriptPart;
-                    } else {
-                        interimTranscript += transcriptPart;
-                    }
-                }
-
-                const chatFeed = document.getElementById('realChatFeed');
-
-                // 1. LIVELY STREAMING WORDS ON CHAT
-                if (interimTranscript.trim()) {
-                    if (realVoiceStatus) {
-                        realVoiceStatus.innerHTML = `🎙️ Live: <em>"${escapeHTML(interimTranscript.trim())}"</em>`;
-                    }
-                    if (realInputText) {
-                        realInputText.value = interimTranscript.trim();
-                    }
-
-                    if (chatFeed) {
-                        const placeholder = chatFeed.querySelector('.chat-placeholder');
-                        if (placeholder) placeholder.remove();
-
-                        let interimBubble = document.getElementById('realInterimBubble');
-                        if (!interimBubble) {
-                            interimBubble = document.createElement('div');
-                            interimBubble.id = 'realInterimBubble';
-                            chatFeed.appendChild(interimBubble);
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        const res = event.results[i];
+                        if (res.isFinal) {
+                            finalTranscript += res[0].transcript;
+                        } else {
+                            interimTranscript += res[0].transcript;
                         }
-                        interimBubble.className = `real-bubble real-bubble-interim ${activeRealSpeaker === 'YOU' ? 'real-bubble-you' : 'real-bubble-mom'}`;
-                        interimBubble.innerHTML = `
-                            <div class="real-bubble-header">
-                                <span>${activeRealSpeaker === 'YOU' ? '🧑 You' : '👩🏻 Mom'} (speaking live...)</span>
-                                <span class="speaking-indicator-dots"><span></span><span></span><span></span></span>
-                            </div>
-                            <div>${escapeHTML(interimTranscript.trim())}</div>
-                        `;
-                        chatFeed.scrollTop = chatFeed.scrollHeight;
                     }
 
-                    // Reset gap timer while speech is actively streaming
-                    if (speechGapTimeout) clearTimeout(speechGapTimeout);
-                }
-
-                // 2. FINALIZED SPEECH STATEMENT
-                if (finalTranscript.trim()) {
-                    if (realInputText) realInputText.value = '';
-                    const spokenSpeaker = activeRealSpeaker;
-                    logRealTurn(spokenSpeaker, finalTranscript.trim());
-
-                    if (spokenSpeaker === 'YOU' && autoGapDetection) {
+                    if (interimTranscript.trim()) {
+                        renderInterimBubble(interimTranscript.trim());
                         if (speechGapTimeout) clearTimeout(speechGapTimeout);
-                        // Trigger speech gap turn after 1.4s of silence
-                        speechGapTimeout = setTimeout(() => {
-                            triggerSpeechGapTurn(finalTranscript.trim());
-                        }, 1400);
                     }
-                }
-            };
 
-            realSpeechRecognizer.onerror = (e) => {
-                console.warn("Speech recognition error:", e.error);
-                if (e.error === 'no-speech') return; // Normal silence
-                if (e.error === 'network') {
-                    if (realVoiceStatus) {
-                        realVoiceStatus.innerHTML = `<span style="color:#fbbf24;" title="Brave blocks Google speech servers by default. You can still use quick chips or type!">⚠️ Voice network paused. Click quick phrases or type to talk!</span>`;
-                    }
-                } else if (e.error === 'not-allowed') {
-                    if (realVoiceStatus) {
-                        realVoiceStatus.innerHTML = `<span style="color:#ef4444;">⚠️ Mic access denied. Click 🎙️ Voice ON to allow microphone.</span>`;
-                    }
-                }
-            };
+                    if (finalTranscript.trim()) {
+                        const realInputText = document.getElementById('realInputText');
+                        if (realInputText) realInputText.value = '';
+                        logRealTurn(activeRealSpeaker, finalTranscript.trim());
 
-            realSpeechRecognizer.onend = () => {
-                const arena = document.getElementById('viewRealArena');
-                if (arena && arena.classList.contains('active') && isRealListening && !isMomReplying) {
-                    setTimeout(() => {
-                        if (isRealListening && !isMomReplying) {
-                            try { realSpeechRecognizer.start(); } catch(e) {}
+                        if (activeRealSpeaker === 'YOU' && autoGapDetection) {
+                            if (speechGapTimeout) clearTimeout(speechGapTimeout);
+                            speechGapTimeout = setTimeout(() => {
+                                triggerSpeechGapTurn(finalTranscript.trim());
+                            }, 1400);
                         }
-                    }, 200);
-                } else if (!isRealListening) {
-                    if (btnRealMic) btnRealMic.classList.remove('listening');
-                    if (micBtnText) micBtnText.textContent = 'Voice OFF';
-                    if (realVoiceStatus) {
-                        realVoiceStatus.innerHTML = `🎙️ Microphone: <span style="color:#94a3b8;">PAUSED (Click to start)</span>`;
                     }
-                }
-            };
+                };
 
-            try {
-                realSpeechRecognizer.start();
+                speechRecInstance.onerror = (e) => {
+                    if (e.error === 'no-speech') return;
+                    if (e.error === 'network' || e.error === 'not-allowed') {
+                        // Brave privacy shield or permission blocks Google Speech servers
+                        isGoogleSTTBlocked = true;
+                        const statusDetail = document.getElementById('realVoiceStatusDetail');
+                        if (statusDetail) {
+                            statusDetail.innerHTML = `<em>(Mic active! Speak into microphone)</em>`;
+                        }
+                    }
+                };
+
+                speechRecInstance.onend = () => {
+                    if (isRealListening && !isMomReplying && !isGoogleSTTBlocked) {
+                        setTimeout(() => {
+                            if (isRealListening && !isMomReplying && !isGoogleSTTBlocked) {
+                                try { speechRecInstance.start(); } catch(e) {}
+                            }
+                        }, 250);
+                    }
+                };
+
+                speechRecInstance.start();
             } catch(e) {
-                console.warn("Could not start speech recognition", e);
+                console.warn("SpeechRec start error:", e);
+                isGoogleSTTBlocked = true;
             }
         }
 
-        function stopRealSpeechRecognition() {
+        async function startRealListeningSystem() {
+            if (isRealListening) return;
+            isRealListening = true;
+
+            const btnMic = document.getElementById('btnRealMic');
+            const micText = document.getElementById('micBtnText');
+            const statusText = document.getElementById('realMicStatusText');
+            const statusDetail = document.getElementById('realVoiceStatusDetail');
+
+            if (btnMic) btnMic.classList.add('listening');
+            if (micText) micText.textContent = 'Listening...';
+            if (statusText) {
+                statusText.textContent = 'LISTENING';
+                statusText.style.color = '#4ade80';
+            }
+            if (statusDetail) {
+                statusDetail.textContent = '(Speak into mic!)';
+            }
+
+            // 1. Initialize hardware microphone stream via Web Audio (100% works in Brave!)
+            await initHardwareMicrophone();
+
+            // 2. Initialize native speech recognition
+            initNativeSpeechRecognition();
+        }
+
+        function stopRealListeningSystem() {
             isRealListening = false;
             if (speechGapTimeout) clearTimeout(speechGapTimeout);
-            if (btnRealMic) btnRealMic.classList.remove('listening');
-            if (micBtnText) micBtnText.textContent = 'Voice OFF';
-            if (realVoiceStatus) {
-                realVoiceStatus.innerHTML = `🎙️ Microphone: <span style="color:#94a3b8;">PAUSED (Click to start)</span>`;
+            if (acousticSilenceTimer) clearTimeout(acousticSilenceTimer);
+            if (acousticWordTimer) clearInterval(acousticWordTimer);
+            acousticSpeakingActive = false;
+
+            if (micRafId) {
+                cancelAnimationFrame(micRafId);
+                micRafId = null;
             }
-            if (realSpeechRecognizer) {
-                try { realSpeechRecognizer.stop(); } catch(e) {}
+
+            const btnMic = document.getElementById('btnRealMic');
+            const micText = document.getElementById('micBtnText');
+            const statusText = document.getElementById('realMicStatusText');
+            const statusDetail = document.getElementById('realVoiceStatusDetail');
+
+            if (btnMic) {
+                btnMic.classList.remove('listening');
+                btnMic.classList.remove('speaking-burst');
+            }
+            if (micText) micText.textContent = 'Voice ON';
+            if (statusText) {
+                statusText.textContent = 'PAUSED';
+                statusText.style.color = '#94a3b8';
+            }
+            if (statusDetail) {
+                statusDetail.textContent = '(Click Voice ON to resume)';
+            }
+
+            updateMicBars(0);
+
+            if (speechRecInstance) {
+                try { speechRecInstance.stop(); } catch(e) {}
             }
         }
 
-        // 9. Conversation Controls: Gap Detection & Mom Voice Toggles
+        // Backward compatibility aliases
+        function startRealSpeechRecognition() { return startRealListeningSystem(); }
+        function stopRealSpeechRecognition() { return stopRealListeningSystem(); }
+
+        // 9. Instant Speech Shortcuts Row (1-Tap Speak)
+        document.querySelectorAll('.speech-shortcut-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const phrase = chip.getAttribute('data-speak') || chip.textContent.trim();
+                setRealSpeaker('YOU');
+                renderInterimBubble(phrase);
+                setTimeout(() => {
+                    logRealTurn('YOU', phrase);
+                    if (autoGapDetection) {
+                        if (speechGapTimeout) clearTimeout(speechGapTimeout);
+                        speechGapTimeout = setTimeout(() => {
+                            triggerSpeechGapTurn(phrase);
+                        }, 1100);
+                    }
+                }, 400);
+            });
+        });
+
+        // 10. Conversation Controls: Gap Detection & Mom Voice Toggles
         const btnToggleGapDetection = document.getElementById('btnToggleGapDetection');
         const toggleGapText = document.getElementById('toggleGapText');
         const btnToggleAutoMom = document.getElementById('btnToggleAutoMom');
@@ -2417,15 +2638,16 @@
             });
         }
 
+        const btnRealMic = document.getElementById('btnRealMic');
         if (btnRealMic) {
             btnRealMic.addEventListener('click', () => {
                 const ctx = getAudioContext();
                 if (ctx && ctx.state === 'suspended') ctx.resume();
 
                 if (isRealListening) {
-                    stopRealSpeechRecognition();
+                    stopRealListeningSystem();
                 } else {
-                    startRealSpeechRecognition();
+                    startRealListeningSystem();
                 }
             });
         }

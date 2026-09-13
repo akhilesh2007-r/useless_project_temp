@@ -2176,6 +2176,59 @@ body.screen-shaking {
   font-weight: 700;
 }
 
+/* Live Microphone Equalizer Bars */
+.mic-live-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 16px;
+  vertical-align: middle;
+  margin: 0 6px;
+}
+.mic-live-bars .m-bar {
+  width: 3px;
+  height: 4px;
+  background: #4ade80;
+  border-radius: 2px;
+  transition: height 0.08s ease, background 0.15s ease;
+}
+.btn-mic.speaking-burst {
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.9) !important;
+  border-color: #38bdf8 !important;
+}
+
+/* Quick Speech Selector bar */
+.speech-shortcuts-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px dashed rgba(255, 255, 255, 0.07);
+  overflow-x: auto;
+  font-size: 0.75rem;
+}
+.speech-shortcut-label {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  font-size: 0.7rem;
+}
+.speech-shortcut-chip {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.speech-shortcut-chip:hover {
+  background: rgba(56, 189, 248, 0.25);
+  transform: translateY(-1px);
+}
+
 
 
 
