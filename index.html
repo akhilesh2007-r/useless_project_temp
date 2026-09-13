@@ -490,8 +490,23 @@
                         <!-- Column 1: Live Voice & Text Chat Feed -->
                         <div class="real-chat-panel">
                             <div class="panel-header">
-                                <span>🎙️ LIVE REAL MOM CONVERSATION</span>
+                                <span>🎙️ LIVE CONVERSATION VOICE CHAT</span>
                                 <span id="realTurnsCountBadge" class="panel-badge">0 statements logged</span>
+                            </div>
+
+                            <!-- Conversation Controls Bar -->
+                            <div class="conversation-controls-bar">
+                                <div class="mic-status-text" id="realVoiceStatus">
+                                    🎙️ Live Listening: <span style="color:#4ade80;font-weight:bold;">ACTIVE (Speak!)</span>
+                                </div>
+                                <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+                                    <span id="btnToggleGapDetection" class="control-pill-toggle active" title="Automatically switch speaker turns when a pause is detected">
+                                        🔄 Auto-Turn on Gap: <strong id="toggleGapText">ON</strong>
+                                    </span>
+                                    <span id="btnToggleAutoMom" class="control-pill-toggle active-mom" title="Auto-speak funny mom comeback when silence occurs">
+                                        🗣️ Mom Voice Reply: <strong id="toggleAutoMomText">ON</strong>
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- Active Speaker Toggle Buttons -->
@@ -508,9 +523,9 @@
                             <div id="realChatFeed" class="real-chat-feed">
                                 <div class="chat-placeholder">
                                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem; animation: pulse 2s infinite;">🎙️</div>
-                                    <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Voice Chat is Ready!</div>
+                                    <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Continuous Voice Chat Ready!</div>
                                     <div style="font-size: 0.85rem; color: #94a3b8; max-width: 320px; line-height: 1.5;">
-                                        Tap <strong>[🧑 You]</strong> or <strong>[👩🏻 Mom]</strong>, then speak or type. You can also click the quick phrases below!
+                                        Click <strong>🎙️ Voice ON</strong> to speak! Your words appear live on screen, gaps are detected, and Mom speaks back!
                                     </div>
                                 </div>
                             </div>
@@ -528,9 +543,9 @@
 
                             <!-- Chat Input Bar -->
                             <div class="chat-input-bar">
-                                <input type="text" id="realInputText" class="chat-input-box" placeholder="Type or click the mic to speak..." autocomplete="off">
-                                <button id="btnRealMic" class="btn-mic" title="Click to Talk / Toggle Microphone">
-                                    🎙️
+                                <input type="text" id="realInputText" class="chat-input-box" placeholder="Speak into mic or type statement..." autocomplete="off">
+                                <button id="btnRealMic" class="btn-mic" style="display:flex;align-items:center;gap:4px;padding:0.65rem 1rem;" title="Toggle Live Microphone Listening">
+                                    🎙️ <span id="micBtnText" style="font-size:0.75rem;font-weight:bold;">Voice ON</span>
                                 </button>
                                 <button id="btnRealSend" class="btn btn-primary" style="padding: 0.65rem 1.4rem; font-weight: 700;">
                                     Log
@@ -1209,6 +1224,15 @@
         // VIEW ROUTING
         // ============================================================
         function switchView(viewId) {
+            if (viewId !== 'viewRealArena') {
+                if (typeof stopRealSpeechRecognition === 'function') {
+                    stopRealSpeechRecognition();
+                }
+                if (typeof realTimerInterval !== 'undefined' && realTimerInterval) {
+                    clearInterval(realTimerInterval);
+                    realTimerInterval = null;
+                }
+            }
             document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
             const target = document.getElementById(viewId);
             if (target) {
@@ -1692,11 +1716,176 @@
         let realTimerInterval = null;
         let realSpeechRecognizer = null;
         let isRealListening = false;
+        let autoGapDetection = true;
+        let autoMomVoiceReply = true;
+        let speechGapTimeout = null;
+        let isMomReplying = false;
+        let lastUserTurnText = "";
 
-        // 1. Start Real Voice Chat Directly from Home Button
+        // 1. Contextual Mother Comeback Generator
+        function generateMomAutoComeback(userText = "") {
+            const lower = (userText || "").toLowerCase();
+
+            // 1. Friends / Going out / Permission
+            if (/\b(outside|friends|party|movie|mall|go out|permission|trip|hangout|can i go|outing)\b/i.test(lower)) {
+                const responses = [
+                    "If everyone jumps into a well, will you also jump into the well?! Answer me first!",
+                    "Look at Sharma ji's son, he never steps outside the house! Only studying 16 hours!",
+                    "Outside?! Did you think this house is a hotel to just come and sleep and go out with friends?!",
+                    "No going anywhere! First finish that mountain of books lying untouched on your table!",
+                    "Going out with those good-for-nothing friends again? Who will pay for the petrol, your father?"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            // 2. Room / Cleaning / House chores
+            if (/\b(room|clean|mess|later|tomorrow|chores|dishes|bed|dust|dirty)\b/i.test(lower)) {
+                const responses = [
+                    "Tomorrow tomorrow! Your room looks like a municipal garbage dump! Clean it right now!",
+                    "Later means never in this house! If guests walk into your room they will think animals are living here!",
+                    "Don't tell me tomorrow! I have been picking up your socks and clothes from the floor for twenty years!",
+                    "One glass of water you cannot bring by yourself, and you are lecturing me about cleaning tomorrow!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            // 3. Phone / Screen / Laptop / Gaming
+            if (/\b(phone|mobile|game|gaming|laptop|screen|reels|insta|youtube|charging|call)\b/i.test(lower)) {
+                const responses = [
+                    "24 hours that phone is glued to your hands! That phone is the root cause of all your failures!",
+                    "Throw that phone in the river first! Even while eating food you are staring at that stupid screen!",
+                    "All day tap tap tap tap on that screen! If you studied with half that dedication you would be NASA director by now!",
+                    "Headache? Because of phone. Low marks? Because of phone. Everything is because of that phone!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            // 4. Studying / Marks / Exams / Homework
+            if (/\b(study|studied|exam|test|marks|college|school|class|grade|grades|math|homework)\b/i.test(lower)) {
+                const responses = [
+                    "Study?! What study?! You only remember to open your book 5 minutes before dinner!",
+                    "Look at your cousin! 99 percentile without any tuition! What will I tell people in society?!",
+                    "You got 85% and you are showing attitude? Where did the remaining 15% go? Who ate it?!",
+                    "If you spent as much brain on your books as you spend making excuses, you would top the state!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            // 5. Unfair / Logic / Why / Back-answering
+            if (/\b(why|unfair|not fair|listen|logic|reason|my life|rights|explain|listen to me)\b/i.test(lower)) {
+                const responses = [
+                    "Because I said so! That is why! As long as you live under my roof, my word is final!",
+                    "Don't teach me logic! I gave birth to you, you didn't give birth to me!",
+                    "Look at the way your tongue is moving! Are you arguing with your own mother now?!",
+                    "Logic?! In front of your mother you are arguing with logic?! Where did all this courage come from?!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            // 6. Calm down / Relax / Chill / Sorry
+            if (/\b(calm|relax|chill|sorry|peace|anger|shouting|yelling|loud)\b/i.test(lower)) {
+                const responses = [
+                    "Don't you dare tell me to calm down! My blood pressure is 240 because of you!",
+                    "I am NOT shouting! This is my normal loving mother voice when talking to someone who refuses to listen!",
+                    "Sorry?! Saying sorry won't fix my ruined mental peace and cold tea!",
+                    "Now you say sorry? After ruining my entire day with your arguments?!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            // 7. Match historical crime if available
+            if (window.crimesDB && window.crimesDB.crimes && window.crimesDB.crimes.length > 0) {
+                const randomCrime = window.crimesDB.crimes[Math.floor(Math.random() * window.crimesDB.crimes.length)];
+                const crimePunches = [
+                    `You think I forgot ${randomCrime.year}?! You did "${randomCrime.title}" and never apologized!`,
+                    `Same excuses you gave in ${randomCrime.year} during the "${randomCrime.title}" incident! I have everything recorded!`,
+                    `Don't act innocent! I still remember ${randomCrime.year}: ${randomCrime.title}! Exactly the same behavior!`
+                ];
+                if (Math.random() > 0.4) {
+                    return crimePunches[Math.floor(Math.random() * crimePunches.length)];
+                }
+            }
+
+            // 8. General Indian Mom Ultimata
+            const generic = [
+                "Did you think I was born yesterday?! I know every trick you are planning in that head!",
+                "You think money grows on money plant in the balcony?! Work hard for one day and then talk!",
+                "One day when you have children of your own, then you will remember every word your mother said!",
+                "Because I said so! Go quietly and finish your work before I find my slipper!"
+            ];
+            return generic[Math.floor(Math.random() * generic.length)];
+        }
+
+        // 2. Automatic Turn Gap Detection & Mom Voice Response Handler
+        function triggerSpeechGapTurn(lastStatement = "") {
+            if (!autoGapDetection || isMomReplying || activeRealSpeaker !== 'YOU') return;
+            isMomReplying = true;
+
+            const chatFeed = document.getElementById('realChatFeed');
+            const voiceStatus = document.getElementById('realVoiceStatus');
+
+            // Insert turn detected alert banner in chat
+            if (chatFeed) {
+                const banner = document.createElement('div');
+                banner.className = 'turn-detected-banner';
+                banner.innerHTML = `<span>⏱️ Speech Gap Detected (1.5s silence)</span> <span>👉 Next: Mom takes the floor!</span>`;
+                chatFeed.appendChild(banner);
+                chatFeed.scrollTop = chatFeed.scrollHeight;
+            }
+
+            // Auto-switch speaker to Mom
+            setRealSpeaker('MOM');
+            if (voiceStatus) {
+                voiceStatus.innerHTML = `👩🏻 <span style="color:#ff3366;font-weight:bold;">Mom detected taking the floor...</span>`;
+            }
+
+            if (autoMomVoiceReply) {
+                const comeback = generateMomAutoComeback(lastStatement || lastUserTurnText);
+                setTimeout(() => {
+                    logRealTurn('MOM', comeback);
+
+                    // Speak out loud with Mom Voice Synthesis
+                    if (window.aiSpeechHandler) {
+                        const anger = window.realMomEngine ? Math.max(65, window.realMomEngine.momAnger) : 75;
+                        window.aiSpeechHandler.speakMomResponse(comeback, anger, "strict", true);
+                    }
+
+                    // Estimate speaking duration (approx 65ms per char, clamped between 2.5s and 6.5s)
+                    const speechDuration = Math.max(2600, Math.min(6500, comeback.length * 68));
+
+                    setTimeout(() => {
+                        // Switch turn back to YOU after Mom speaks
+                        if (chatFeed) {
+                            const returnBanner = document.createElement('div');
+                            returnBanner.className = 'turn-detected-banner';
+                            returnBanner.style.background = 'rgba(56, 189, 248, 0.15)';
+                            returnBanner.style.color = '#38bdf8';
+                            returnBanner.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                            returnBanner.innerHTML = `<span>✅ Mom finished speaking</span> <span>👉 Your turn to reply!</span>`;
+                            chatFeed.appendChild(returnBanner);
+                            chatFeed.scrollTop = chatFeed.scrollHeight;
+                        }
+                        setRealSpeaker('YOU');
+                        isMomReplying = false;
+                        if (voiceStatus) {
+                            voiceStatus.innerHTML = isRealListening ?
+                                `🎙️ Live Listening: <span style="color:#4ade80;font-weight:bold;">ACTIVE (Your turn! Speak into mic)</span>` :
+                                `🎙️ Microphone: <span style="color:#94a3b8;">IDLE</span>`;
+                        }
+                    }, speechDuration);
+                }, 450);
+            } else {
+                isMomReplying = false;
+            }
+        }
+
+        // 3. Start Real Voice Chat Directly from Home Button
         function startRealVoiceChat() {
             // Start Real Mom Engine
             window.realMomEngine.start("Real Argument");
+            isMomReplying = false;
+            lastUserTurnText = "";
+            if (speechGapTimeout) clearTimeout(speechGapTimeout);
 
             const timerDisplay = document.getElementById('realTimerDisplay');
             if (timerDisplay) timerDisplay.textContent = 'LIVE: 00m 00s';
@@ -1739,9 +1928,9 @@
                 chatFeed.innerHTML = `
                     <div class="chat-placeholder">
                         <div style="font-size: 2.5rem; margin-bottom: 0.5rem; animation: pulse 2s infinite;">🎙️</div>
-                        <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Voice Chat is Ready!</div>
-                        <div style="font-size: 0.85rem; color: #94a3b8; max-width: 320px; line-height: 1.5;">
-                            Tap <strong>[🧑 You]</strong> or <strong>[👩🏻 Mom]</strong>, then speak or type. You can also click the quick phrases below!
+                        <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Live Voice Conversation Ready!</div>
+                        <div style="font-size: 0.85rem; color: #94a3b8; max-width: 340px; line-height: 1.5;">
+                            Speak into your mic! Words stream live into the chat. When you pause (speech gap), Mom takes the turn and speaks back!
                         </div>
                     </div>
                 `;
@@ -1756,6 +1945,9 @@
                     </div>
                 `;
             }
+
+            // Set active speaker to YOU
+            setRealSpeaker('YOU');
 
             // Start Timer ticker
             if (realTimerInterval) clearInterval(realTimerInterval);
@@ -1773,7 +1965,7 @@
             startRealSpeechRecognition();
         }
 
-        // 2. Speaker Toggle [YOU] vs [MOM]
+        // 4. Speaker Toggle [YOU] vs [MOM]
         const btnSpeakerYou = document.getElementById('btnSpeakerYou');
         const btnSpeakerMom = document.getElementById('btnSpeakerMom');
 
@@ -1803,14 +1995,24 @@
             btnSpeakerMom.addEventListener('click', () => setRealSpeaker('MOM'));
         }
 
-        // 3. Logging a Turn
+        // 5. Logging a Turn in Real Chat Feed
         function logRealTurn(speaker, text) {
             if (!text || !text.trim()) return;
             const turn = window.realMomEngine.addTurn(speaker, text.trim());
             if (!turn) return;
 
+            if (speaker === 'YOU') {
+                lastUserTurnText = text.trim();
+            }
+
             const chatFeed = document.getElementById('realChatFeed');
             if (chatFeed) {
+                // Remove interim bubble if present
+                const existingInterim = document.getElementById('realInterimBubble');
+                if (existingInterim && existingInterim.parentNode) {
+                    existingInterim.parentNode.removeChild(existingInterim);
+                }
+
                 // Remove placeholder if first turn
                 if (window.realMomEngine.history.length === 1) {
                     chatFeed.innerHTML = '';
@@ -1976,7 +2178,7 @@
             }
         }
 
-        // 7. Input Text Send & Enter Key
+        // 6. Input Text Send & Enter Key
         const realInputText = document.getElementById('realInputText');
         const btnRealSend = document.getElementById('btnRealSend');
 
@@ -1984,9 +2186,17 @@
             if (!realInputText) return;
             const text = realInputText.value;
             if (!text || !text.trim()) return;
-            logRealTurn(activeRealSpeaker, text);
+            const spk = activeRealSpeaker;
+            logRealTurn(spk, text);
             realInputText.value = '';
             realInputText.focus();
+
+            if (spk === 'YOU' && autoGapDetection) {
+                if (speechGapTimeout) clearTimeout(speechGapTimeout);
+                speechGapTimeout = setTimeout(() => {
+                    triggerSpeechGapTurn(text);
+                }, 1200);
+            }
         }
 
         if (btnRealSend) {
@@ -2001,57 +2211,167 @@
             });
         }
 
-        // 8. Quick Chips Click
+        // 7. Quick Chips Click with Auto Gap Detection
         document.querySelectorAll('.real-quick-chip').forEach(chip => {
             chip.addEventListener('click', () => {
                 const speaker = chip.getAttribute('data-speaker') || activeRealSpeaker;
                 const text = chip.getAttribute('data-text') || chip.textContent.trim();
                 setRealSpeaker(speaker);
                 logRealTurn(speaker, text);
+
+                if (speaker === 'YOU' && autoGapDetection) {
+                    if (speechGapTimeout) clearTimeout(speechGapTimeout);
+                    speechGapTimeout = setTimeout(() => {
+                        triggerSpeechGapTurn(text);
+                    }, 1200);
+                }
             });
         });
 
-        // 9. Speech Recognition for Live Real Argument Listening
+        // 8. Speech Recognition with Live Streaming Words & Silence Gap Detection
         const btnRealMic = document.getElementById('btnRealMic');
+        const micBtnText = document.getElementById('micBtnText');
+        const realVoiceStatus = document.getElementById('realVoiceStatus');
 
-        function startRealSpeechRecognition() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                console.log("Speech recognition not supported in this browser");
+        async function startRealSpeechRecognition() {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRec) {
+                if (realVoiceStatus) {
+                    realVoiceStatus.innerHTML = `<span style="color:#fbbf24;">⚠️ Speech API not available. Type or click quick chips!</span>`;
+                }
                 return;
             }
+
+            // Request explicit mic permission
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    stream.getTracks().forEach(t => t.stop());
+                } catch (permErr) {
+                    console.warn("Microphone access prompt dismissed or denied:", permErr);
+                }
+            }
+
             if (realSpeechRecognizer) {
                 try { realSpeechRecognizer.stop(); } catch(e) {}
             }
-            realSpeechRecognizer = new SpeechRecognition();
+
+            try {
+                realSpeechRecognizer = new SpeechRec();
+            } catch (err) {
+                console.error("Could not construct SpeechRecognition:", err);
+                return;
+            }
+
             realSpeechRecognizer.continuous = true;
-            realSpeechRecognizer.interimResults = false;
-            realSpeechRecognizer.lang = 'en-US';
+            realSpeechRecognizer.interimResults = true;
+            realSpeechRecognizer.lang = 'en-IN'; // Indian English / natural inflection
 
             realSpeechRecognizer.onstart = () => {
                 isRealListening = true;
                 if (btnRealMic) btnRealMic.classList.add('listening');
-            };
-            realSpeechRecognizer.onresult = (event) => {
-                const current = event.resultIndex;
-                const transcript = event.results[current][0].transcript;
-                if (transcript && transcript.trim()) {
-                    logRealTurn(activeRealSpeaker, transcript);
+                if (micBtnText) micBtnText.textContent = 'Listening...';
+                if (realVoiceStatus) {
+                    realVoiceStatus.innerHTML = `🎙️ Live Listening: <span style="color:#4ade80;font-weight:bold;">ACTIVE (Speak into mic!)</span>`;
                 }
             };
+
+            realSpeechRecognizer.onresult = (event) => {
+                if (isMomReplying) return; // Prevent mic pickup while Mom speaks
+
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    const res = event.results[i];
+                    const transcriptPart = res[0].transcript;
+                    if (res.isFinal) {
+                        finalTranscript += transcriptPart;
+                    } else {
+                        interimTranscript += transcriptPart;
+                    }
+                }
+
+                const chatFeed = document.getElementById('realChatFeed');
+
+                // 1. LIVELY STREAMING WORDS ON CHAT
+                if (interimTranscript.trim()) {
+                    if (realVoiceStatus) {
+                        realVoiceStatus.innerHTML = `🎙️ Live: <em>"${escapeHTML(interimTranscript.trim())}"</em>`;
+                    }
+                    if (realInputText) {
+                        realInputText.value = interimTranscript.trim();
+                    }
+
+                    if (chatFeed) {
+                        const placeholder = chatFeed.querySelector('.chat-placeholder');
+                        if (placeholder) placeholder.remove();
+
+                        let interimBubble = document.getElementById('realInterimBubble');
+                        if (!interimBubble) {
+                            interimBubble = document.createElement('div');
+                            interimBubble.id = 'realInterimBubble';
+                            chatFeed.appendChild(interimBubble);
+                        }
+                        interimBubble.className = `real-bubble real-bubble-interim ${activeRealSpeaker === 'YOU' ? 'real-bubble-you' : 'real-bubble-mom'}`;
+                        interimBubble.innerHTML = `
+                            <div class="real-bubble-header">
+                                <span>${activeRealSpeaker === 'YOU' ? '🧑 You' : '👩🏻 Mom'} (speaking live...)</span>
+                                <span class="speaking-indicator-dots"><span></span><span></span><span></span></span>
+                            </div>
+                            <div>${escapeHTML(interimTranscript.trim())}</div>
+                        `;
+                        chatFeed.scrollTop = chatFeed.scrollHeight;
+                    }
+
+                    // Reset gap timer while speech is actively streaming
+                    if (speechGapTimeout) clearTimeout(speechGapTimeout);
+                }
+
+                // 2. FINALIZED SPEECH STATEMENT
+                if (finalTranscript.trim()) {
+                    if (realInputText) realInputText.value = '';
+                    const spokenSpeaker = activeRealSpeaker;
+                    logRealTurn(spokenSpeaker, finalTranscript.trim());
+
+                    if (spokenSpeaker === 'YOU' && autoGapDetection) {
+                        if (speechGapTimeout) clearTimeout(speechGapTimeout);
+                        // Trigger speech gap turn after 1.4s of silence
+                        speechGapTimeout = setTimeout(() => {
+                            triggerSpeechGapTurn(finalTranscript.trim());
+                        }, 1400);
+                    }
+                }
+            };
+
             realSpeechRecognizer.onerror = (e) => {
                 console.warn("Speech recognition error:", e.error);
-                isRealListening = false;
-                if (btnRealMic) btnRealMic.classList.remove('listening');
+                if (e.error === 'no-speech') return; // Normal silence
+                if (e.error === 'network') {
+                    if (realVoiceStatus) {
+                        realVoiceStatus.innerHTML = `<span style="color:#fbbf24;" title="Brave blocks Google speech servers by default. You can still use quick chips or type!">⚠️ Voice network paused. Click quick phrases or type to talk!</span>`;
+                    }
+                } else if (e.error === 'not-allowed') {
+                    if (realVoiceStatus) {
+                        realVoiceStatus.innerHTML = `<span style="color:#ef4444;">⚠️ Mic access denied. Click 🎙️ Voice ON to allow microphone.</span>`;
+                    }
+                }
             };
+
             realSpeechRecognizer.onend = () => {
-                // If arena is still active, restart listening seamlessly
                 const arena = document.getElementById('viewRealArena');
-                if (arena && arena.classList.contains('active') && isRealListening) {
-                    try { realSpeechRecognizer.start(); } catch(e) {}
-                } else {
-                    isRealListening = false;
+                if (arena && arena.classList.contains('active') && isRealListening && !isMomReplying) {
+                    setTimeout(() => {
+                        if (isRealListening && !isMomReplying) {
+                            try { realSpeechRecognizer.start(); } catch(e) {}
+                        }
+                    }, 200);
+                } else if (!isRealListening) {
                     if (btnRealMic) btnRealMic.classList.remove('listening');
+                    if (micBtnText) micBtnText.textContent = 'Voice OFF';
+                    if (realVoiceStatus) {
+                        realVoiceStatus.innerHTML = `🎙️ Microphone: <span style="color:#94a3b8;">PAUSED (Click to start)</span>`;
+                    }
                 }
             };
 
@@ -2064,14 +2384,44 @@
 
         function stopRealSpeechRecognition() {
             isRealListening = false;
+            if (speechGapTimeout) clearTimeout(speechGapTimeout);
             if (btnRealMic) btnRealMic.classList.remove('listening');
+            if (micBtnText) micBtnText.textContent = 'Voice OFF';
+            if (realVoiceStatus) {
+                realVoiceStatus.innerHTML = `🎙️ Microphone: <span style="color:#94a3b8;">PAUSED (Click to start)</span>`;
+            }
             if (realSpeechRecognizer) {
                 try { realSpeechRecognizer.stop(); } catch(e) {}
             }
         }
 
+        // 9. Conversation Controls: Gap Detection & Mom Voice Toggles
+        const btnToggleGapDetection = document.getElementById('btnToggleGapDetection');
+        const toggleGapText = document.getElementById('toggleGapText');
+        const btnToggleAutoMom = document.getElementById('btnToggleAutoMom');
+        const toggleAutoMomText = document.getElementById('toggleAutoMomText');
+
+        if (btnToggleGapDetection) {
+            btnToggleGapDetection.addEventListener('click', () => {
+                autoGapDetection = !autoGapDetection;
+                if (toggleGapText) toggleGapText.textContent = autoGapDetection ? "ON" : "OFF";
+                btnToggleGapDetection.classList.toggle('active', autoGapDetection);
+            });
+        }
+
+        if (btnToggleAutoMom) {
+            btnToggleAutoMom.addEventListener('click', () => {
+                autoMomVoiceReply = !autoMomVoiceReply;
+                if (toggleAutoMomText) toggleAutoMomText.textContent = autoMomVoiceReply ? "ON" : "OFF";
+                btnToggleAutoMom.classList.toggle('active-mom', autoMomVoiceReply);
+            });
+        }
+
         if (btnRealMic) {
             btnRealMic.addEventListener('click', () => {
+                const ctx = getAudioContext();
+                if (ctx && ctx.state === 'suspended') ctx.resume();
+
                 if (isRealListening) {
                     stopRealSpeechRecognition();
                 } else {
@@ -2086,6 +2436,8 @@
             btnFinishRealArgument.addEventListener('click', () => {
                 // Stop speech & timers
                 stopRealSpeechRecognition();
+                if (speechGapTimeout) clearTimeout(speechGapTimeout);
+                if (window.aiSpeechHandler) window.aiSpeechHandler.cancel();
                 if (realTimerInterval) {
                     clearInterval(realTimerInterval);
                     realTimerInterval = null;
