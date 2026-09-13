@@ -460,7 +460,7 @@
                  VIEW 5: REAL MOM VOICE CHAT & THREAT SURVEILLANCE
                  ============================================================ -->
             <section id="viewRealArena" class="view-section">
-                <div class="real-arena-container">
+                <div class="real-arena-container" style="max-width: 1200px; margin: 0 auto;">
                     
                     <!-- Top Bar: Timer, Speaking Balance, and End Button -->
                     <div class="real-arena-topbar">
@@ -490,7 +490,7 @@
                         <!-- Column 1: Live Voice & Text Chat Feed -->
                         <div class="real-chat-panel">
                             <div class="panel-header">
-                                <span class="panel-title">🎙️ LIVE REAL MOM CONVERSATION</span>
+                                <span>🎙️ LIVE REAL MOM CONVERSATION</span>
                                 <span id="realTurnsCountBadge" class="panel-badge">0 statements logged</span>
                             </div>
 
@@ -1686,7 +1686,7 @@
         }
 
         // ============================================================
-        // REAL MOM VOICE CHAT & SURVEILLANCE CONTROLLER
+        // REAL MOM VOICE CHAT & THREAT SURVEILLANCE CONTROLLER
         // ============================================================
         let activeRealSpeaker = "YOU";
         let realTimerInterval = null;
@@ -1859,7 +1859,7 @@
             const turnsBadge = document.getElementById('realTurnsCountBadge');
             if (turnsBadge) turnsBadge.textContent = `${window.realMomEngine.history.length} statements logged`;
 
-            // Update Back-Answering Risk Meter
+            // Back-Answering Risk Meter
             const backVal = document.getElementById('realBackAnswerVal');
             const backFill = document.getElementById('realBackAnswerFill');
             const currentRisk = turn.backAnswer && turn.backAnswer.detected ? Math.min(100, 60 + turn.backAnswer.riskScore) : Math.max(10, Math.round(window.realMomEngine.momAnger * 0.4));
@@ -1976,7 +1976,7 @@
             }
         }
 
-        // 4. Input Text Send & Enter Key
+        // 7. Input Text Send & Enter Key
         const realInputText = document.getElementById('realInputText');
         const btnRealSend = document.getElementById('btnRealSend');
 
@@ -2001,7 +2001,7 @@
             });
         }
 
-        // 5. Quick Chips Click
+        // 8. Quick Chips Click
         document.querySelectorAll('.real-quick-chip').forEach(chip => {
             chip.addEventListener('click', () => {
                 const speaker = chip.getAttribute('data-speaker') || activeRealSpeaker;
@@ -2011,7 +2011,7 @@
             });
         });
 
-        // 6. Speech Recognition for Live Real Argument Listening
+        // 9. Speech Recognition for Live Real Argument Listening
         const btnRealMic = document.getElementById('btnRealMic');
 
         function startRealSpeechRecognition() {
@@ -2045,6 +2045,7 @@
                 if (btnRealMic) btnRealMic.classList.remove('listening');
             };
             realSpeechRecognizer.onend = () => {
+                // If arena is still active, restart listening seamlessly
                 const arena = document.getElementById('viewRealArena');
                 if (arena && arena.classList.contains('active') && isRealListening) {
                     try { realSpeechRecognizer.start(); } catch(e) {}
@@ -2079,7 +2080,7 @@
             });
         }
 
-        // 7. Finish & Calculate Verdict Button
+        // 10. Finish & Calculate Verdict Button
         const btnFinishRealArgument = document.getElementById('btnFinishRealArgument');
         if (btnFinishRealArgument) {
             btnFinishRealArgument.addEventListener('click', () => {
@@ -2171,7 +2172,7 @@
             });
         }
 
-        // 8. Real Debrief Buttons: Train in AI Mode & Return Home
+        // 11. Real Debrief Buttons: Train in AI Mode & Return Home
         const btnRealTrainAiMode = document.getElementById('btnRealTrainAiMode');
         const btnRealBackHome = document.getElementById('btnRealBackHome');
 
