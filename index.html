@@ -513,16 +513,6 @@
                                 </div>
                             </div>
 
-                            <!-- Active Speaker Toggle Buttons -->
-                            <div class="speaker-toggle-row">
-                                <button id="btnSpeakerYou" class="speaker-btn active-you">
-                                    🧑 You Speaking
-                                </button>
-                                <button id="btnSpeakerMom" class="speaker-btn">
-                                    👩🏻 Mom Speaking
-                                </button>
-                            </div>
-
                             <!-- Chat Feed -->
                             <div id="realChatFeed" class="real-chat-feed">
                                 <div class="chat-placeholder">
@@ -606,9 +596,6 @@
                                 </div>
                                 <div class="meter-track" style="margin-bottom: 0.65rem;">
                                     <div id="realBackAnswerFill" class="meter-fill meter-backanswer" style="width: 0%;"></div>
-                                </div>
-                                <div class="risk-tip">
-                                    ⚠️ <strong>Warning:</strong> Explaining logic or stating facts is classified by Indian Mothers as Back-Answering.
                                 </div>
                             </div>
 
@@ -1810,10 +1797,11 @@
             // 7. Match historical crime if available
             if (window.crimesDB && window.crimesDB.crimes && window.crimesDB.crimes.length > 0) {
                 const randomCrime = window.crimesDB.crimes[Math.floor(Math.random() * window.crimesDB.crimes.length)];
+                const crimeDesc = randomCrime.crime || randomCrime.title || "an unforgivable mistake";
                 const crimePunches = [
-                    `You think I forgot ${randomCrime.year}?! You did "${randomCrime.title}" and never apologized!`,
-                    `Same excuses you gave in ${randomCrime.year} during the "${randomCrime.title}" incident! I have everything recorded!`,
-                    `Don't act innocent! I still remember ${randomCrime.year}: ${randomCrime.title}! Exactly the same behavior!`
+                    `You think I forgot ${randomCrime.year}?! You did "${crimeDesc}" and never apologized!`,
+                    `Same excuses you gave in ${randomCrime.year} during the "${crimeDesc}" incident! I have everything recorded!`,
+                    `Don't act innocent! I still remember ${randomCrime.year}: ${crimeDesc}! Exactly the same behavior!`
                 ];
                 if (Math.random() > 0.4) {
                     return crimePunches[Math.floor(Math.random() * crimePunches.length)];
@@ -2046,7 +2034,7 @@
                     badgesHtml += `<span class="real-bubble-badge badge-momlogic">${turn.momLogic.title}</span>`;
                 }
                 if (turn.matchedCrime) {
-                    badgesHtml += `<span class="real-bubble-badge badge-crime">📂 CRIME RETRIEVED: ${turn.matchedCrime.year} - ${escapeHTML(turn.matchedCrime.title)}</span>`;
+                    badgesHtml += `<span class="real-bubble-badge badge-crime">📂 CRIME RETRIEVED: ${turn.matchedCrime.year} - ${escapeHTML(turn.matchedCrime.crime || turn.matchedCrime.title)}</span>`;
                 }
 
                 bubble.innerHTML = `
@@ -2169,7 +2157,7 @@
                     alertCard.style.background = 'rgba(168, 85, 247, 0.12)';
                     alertCard.innerHTML = `
                         <div class="radar-alert-title" style="color: #c084fc;">📂 HISTORICAL ARCHIVE QUERIED (${turn.matchedCrime.year})</div>
-                        <div class="radar-alert-desc">Mom weaponized incident: "${escapeHTML(turn.matchedCrime.title)}". Factual statute of limitations does not apply.</div>
+                        <div class="radar-alert-desc">Mom weaponized incident: "${escapeHTML(turn.matchedCrime.crime || turn.matchedCrime.title)}". Factual statute of limitations does not apply.</div>
                     `;
                 }
 
