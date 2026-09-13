@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is Mom Gonna Beat You?</title>
+
+    <!-- Google Fonts: Outfit, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- ============================================================
+       CHAPPAL INTRO OVERLAY (BLURRED BACKGROUND WITH BEATING SOUND)
+       ============================================================ -->
+    <div id="chappalIntroOverlay" class="chappal-intro-overlay">
+        <div class="intro-chappal-box">
+            <div id="introShockwave" class="intro-shockwave"></div>
+            <div class="intro-chappal-icon" id="introChappalIcon">🩴</div>
+        </div>
+        <div class="intro-text-box">
+
+            <h1 class="intro-title" style="font-size: clamp(2rem, 4.5vw, 3rem); line-height: 1.15;">
+                Welcome to<br><span style="color: var(--mom-accent); text-shadow: 0 0 25px var(--mom-glow);">IS MOM
+                    GONNA BEAT YOU ?</span>
+            </h1>
+            <p class="intro-subtitle" style="margin-top: 0.5rem;">to scientifically prove that you have 0% CHANCE of
+                winning an argument with your mother.</p>
+            <p id="clickToStartText"
+                style="margin-top: 2rem; font-weight: bold; font-size: 1.2rem; color: #ffeb3b; animation: pulse 1.5s infinite; cursor: pointer;">
+                ( Are you Ready 😝 - Then Click Anywhere Fast 💨 )
+            </p>
+        </div>
+    </div>
+
+    <div class="app-container">
+
+        <!-- Top Navigation Bar -->
+        <header class="navbar">
+            <div class="nav-brand" id="navBrand">
+                <span class="brand-icon">🩴</span>
+                <div>
+                    <span class="brand-title">IS MOM GONNA BEAT YOU ?</span>
+
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button id="btnSoundToggle" class="btn btn-outline btn-sm">🔊 Sound: ON</button>
+                <button id="btnCrimesNav" class="btn btn-outline btn-sm">📂 Crimes DB</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- VIEW 1: LANDING PAGE -->
+            <section id="viewLanding" class="view-section active">
+                <div class="hero-wrapper">
+
+                    <!-- Animated Cyber-Slipper Box -->
+                    <div class="slipper-hero-box">
+                        <div class="slipper-hero-glow"></div>
+                        <div class="slipper-hero-icon" title="Beware the Slipper">🩴</div>
+                    </div>
+
+                    <h1 class="hero-title">
+                        ARGUMENT WITH MOM <br><span class="highlight">SIMULATOR</span>
+                    </h1>
+
+
+
+                    <div class="hero-cta-box">
+                        <div class="hero-buttons-group">
+                            <button id="btnStartAiArgument" class="btn btn-ai btn-hero">
+                                🤖 Ai Mom
+                            </button>
+                            <button id="btnStartRealArgument" class="btn btn-primary btn-hero">
+                                👩🏻 Real Mom
+                            </button>
+                        </div>
+                        <div class="hero-warning">
+                            <span>⚠️</span> This system cannot guarantee your safety from “Because I Said So.”
+                        </div>
+                    </div>
+
+                    <!-- Hackathon Presentation Mission Statement -->
+                    <div class="mission-box">
+                        <p class="hero-subtitle hero-subtitle-enhanced">
+                            <span class="subtitle-highlight-mom">Real Mom.</span> <span
+                                class="subtitle-highlight-arg">Real
+                                argument.</span> <span class="subtitle-highlight-ai">Also use AI Mom for experience
+                                ✨</span>
+                        </p>
+
+                        <p class="mission-punchline">
+                            …to scientifically prove that you have <span style="color: var(--mom-accent);">0%
+                                CHANCE</span> of winning an argument with your mother.
+                        </p>
+                    </div>
+
+                    <!-- Live Humorous Statistics -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">12,483</div>
+                            <div class="stat-label">Arguments Analyzed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Moms Declared Winner</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Logic Attacks Succeeded</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">8,294</div>
+                            <div class="stat-label">“I Already Told You”</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">5,821</div>
+                            <div class="stat-label">Historical Crimes Recalled</div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 VIEW 2: AI MOM SETUP & SITUATION SELECTOR
+                 ============================================================ -->
+            <section id="viewAiSetup" class="view-section">
+                <div class="ai-setup-container">
+                    <div class="setup-header">
+                        <span class="setup-badge">🔴 THE TRAINING GROUND</span>
+                        <h2 class="setup-title">AI MOM SIMULATOR</h2>
+                        <p class="setup-subtitle">Survive the argument without triggering an airborne projectile.</p>
+                    </div>
+
+                    <!-- Dynamic Scenario Card -->
+                    <div class="scenario-card">
+                        <div class="scenario-top-row">
+                            <span id="setupScenarioTag" class="scenario-tag">CURFEW & FREEDOM</span>
+                            <button id="btnRandomizeScenario" class="btn-randomize">
+                                🎲 Randomize Situation
+                            </button>
+                        </div>
+                        <h3 id="setupScenarioTitle" class="scenario-title">Came Home Past Curfew</h3>
+                        <p id="setupScenarioDesc" class="scenario-desc">
+                            You arrived home 2.5 hours past your promised curfew. Your phone was switched off the entire time. Tomorrow is an 8:00 AM semester exam.
+                        </p>
+                        <div id="setupScenarioStakes" class="scenario-stakes-pill">
+                            ⚠️ Stakes: Your phone privileges are hanging by a thread and dad is sitting quietly without TV.
+                        </div>
+                    </div>
+
+                    <!-- Personality Selection -->
+                    <div class="personality-section-title">
+                        <span>👩 AI MOM PERSONALITY:</span>
+                        <span style="font-size: 0.8rem; font-weight: 500; color: var(--text-muted);">(Select who you are facing)</span>
+                    </div>
+
+                    <div class="personality-grid" id="personalityGrid">
+                        <!-- Card 1: Calm Mom -->
+                        <div class="personality-card" data-personality="calm">
+                            <div class="p-card-header">
+                                <span class="p-name">🟢 Calm Mom</span>
+                                <span class="p-tag">Patient</span>
+                            </div>
+                            <p class="p-desc">Gives you several chances. Uses heavy guilt and disappointed sighs instead of shouting.</p>
+                            <div class="p-stats-bar">
+                                <span>Patience: 85%</span> • <span>Anger: 25%</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Suspicious Mom -->
+                        <div class="personality-card" data-personality="suspicious">
+                            <div class="p-card-header">
+                                <span class="p-name">🟡 Suspicious Mom</span>
+                                <span class="p-tag">Interrogator</span>
+                            </div>
+                            <p class="p-desc">Cross-examines every timestamp. Checks call logs. Assumes everything is a conspiracy.</p>
+                            <div class="p-stats-bar">
+                                <span>Suspicion: 85%</span> • <span>Trust: 20%</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Strict Mom (Default) -->
+                        <div class="personality-card active" data-personality="strict">
+                            <div class="p-card-header">
+                                <span class="p-name">🟠 Strict Mom</span>
+                                <span class="p-tag">Dictator</span>
+                            </div>
+                            <p class="p-desc">Rules over explanations. Deploys 'Because I said so' protocol without hesitation.</p>
+                            <div class="p-stats-bar">
+                                <span>Patience: 35%</span> • <span>Anger: 50%</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Angry Mom -->
+                        <div class="personality-card" data-personality="angry">
+                            <div class="p-card-header">
+                                <span class="p-name">🔴 Angry Mom</span>
+                                <span class="p-tag">Volcanic</span>
+                            </div>
+                            <p class="p-desc">Starts at boiling point. Every word you utter is categorized as direct defiance.</p>
+                            <div class="p-stats-bar">
+                                <span>Anger: 70%</span> • <span>Escalation: 1.8x</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 5: Logical Mom -->
+                        <div class="personality-card" data-personality="logical">
+                            <div class="p-card-header">
+                                <span class="p-name">🧠 Logical Mom</span>
+                                <span class="p-tag">Auditor</span>
+                            </div>
+                            <p class="p-desc">Challenges your reasoning. Weaponizes Sharma ji's son statistics and budget math.</p>
+                            <div class="p-stats-bar">
+                                <span>Suspicion: 70%</span> • <span>Logic: 90%</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 6: Final Boss Mom -->
+                        <div class="personality-card" data-personality="boss">
+                            <div class="p-card-header">
+                                <span class="p-name">💀 Final Boss Mom</span>
+                                <span class="p-tag">Threat Level 99</span>
+                            </div>
+                            <p class="p-desc">Combines all traits. Recalls sins from 2018. Slipper primed. Zero room for error.</p>
+                            <div class="p-stats-bar">
+                                <span>Anger: 75%</span> • <span>Patience: 10%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Row -->
+                    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                        <button id="btnBackToHomeFromSetup" class="btn btn-outline" style="padding: 0.9rem 1.75rem;">
+                            ⬅️ Back to Home
+                        </button>
+                        <button id="btnEnterAiArena" class="btn btn-ai" style="padding: 0.9rem 2.5rem; font-size: 1.15rem; font-weight: 800;">
+                            ⚔️ ENTER TRAINING ARENA
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 VIEW 3: AI MOM LIVE BATTLE ARENA
+                 ============================================================ -->
+            <section id="viewAiArena" class="view-section">
+                <div class="ai-arena-container">
+                    
+                    <!-- Top Status Bar -->
+                    <div class="arena-topbar">
+                        <div class="arena-scenario-brief">
+                            <span id="arenaPersonaBadge" class="scenario-tag">🟠 Strict Mom</span>
+                            <span id="arenaScenarioTitle" style="font-weight: 700; color: white;">Came Home Past Curfew</span>
+                        </div>
+                        <div class="arena-controls">
+                            <span id="arenaTurnCounter" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">Turn: 1/8</span>
+                            <button id="btnEndArgumentEarly" class="btn btn-outline btn-sm" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">
+                                🏳️ Surrender / End
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Battle Grid -->
+                    <div class="arena-grid">
+                        
+                        <!-- Left: Chat Battle Feed -->
+                        <div class="chat-battle-feed">
+                            <div class="mom-avatar-strip">
+                                <span id="momAvatarIcon" class="mom-avatar-icon">👩🏻</span>
+                                <div class="mom-avatar-info">
+                                    <div id="momAvatarName" class="mom-avatar-name">Mom (Strict Persona)</div>
+                                    <div id="momAvatarMood" class="mom-avatar-mood">Current Mood: Suspiciously Calm</div>
+                                </div>
+                            </div>
+
+                            <!-- Live Transcript -->
+                            <div id="aiChatTranscript" class="chat-transcript">
+                                <!-- Messages injected dynamically -->
+                            </div>
+
+                            <!-- Quick Excuses Chips -->
+                            <div class="quick-chips-row">
+                                <span class="quick-chip" data-text="I am really sorry, my phone died.">🔋 My phone died</span>
+                                <span class="quick-chip" data-text="Traffic was completely blocked for 2 hours.">🚗 Terrible traffic</span>
+                                <span class="quick-chip" data-text="I was at the library studying for tomorrow.">📚 Was studying</span>
+                                <span class="quick-chip" data-text="I promise I will clean the whole house tomorrow.">🧹 Promise to clean</span>
+                                <span class="quick-chip" data-text="Everyone else was staying until 1 AM.">👥 Everyone was there</span>
+                                <span class="quick-chip" data-text="Mom please calm down, let me explain.">⚠️ Tell Mom to chill</span>
+                            </div>
+
+                            <!-- Input Bar -->
+                            <div class="chat-input-bar">
+                                <input type="text" id="aiUserInput" class="chat-input-box" placeholder="Type your excuse or defense..." autocomplete="off">
+                                <button id="btnAiVoiceMic" class="btn-mic" title="Voice Argument Mode (Speak)">
+                                    🎙️
+                                </button>
+                                <button id="btnSendAiText" class="btn btn-primary" style="padding: 0.65rem 1.25rem;">
+                                    Send
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right: Telemetry & Risk Radar Dashboard -->
+                        <div class="telemetry-dashboard">
+                            <div class="telemetry-title">
+                                <span>📊 REAL-TIME TELEMETRY</span>
+                                <span id="telemetryStatusPill" style="font-size: 0.7rem; font-family: var(--font-mono); color: #38bdf8;">ACTIVE MONITORING</span>
+                            </div>
+
+                            <!-- Threat Status Banner -->
+                            <div id="threatStatusBanner" class="status-warning-banner">
+                                ⚠️ ARGUMENT LEVEL: TENSION BUILDING
+                            </div>
+
+                            <!-- Meters -->
+                            <div class="meter-group">
+                                <div class="meter-header">
+                                    <span>MOM ANGER LEVEL</span>
+                                    <span id="meterAngerVal" class="meter-value">50%</span>
+                                </div>
+                                <div class="meter-track">
+                                    <div id="meterAngerFill" class="meter-fill meter-anger" style="width: 50%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="meter-group">
+                                <div class="meter-header">
+                                    <span>MOM PATIENCE REMAINING</span>
+                                    <span id="meterPatienceVal" class="meter-value">35%</span>
+                                </div>
+                                <div class="meter-track">
+                                    <div id="meterPatienceFill" class="meter-fill meter-patience" style="width: 35%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="meter-group">
+                                <div class="meter-header">
+                                    <span>SUSPICION COEFFICIENT</span>
+                                    <span id="meterSuspicionVal" class="meter-value">65%</span>
+                                </div>
+                                <div class="meter-track">
+                                    <div id="meterSuspicionFill" class="meter-fill meter-suspicion" style="width: 65%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="meter-group">
+                                <div class="meter-header">
+                                    <span>BACK-ANSWERING RISK</span>
+                                    <span id="meterBackanswerVal" class="meter-value">10%</span>
+                                </div>
+                                <div class="meter-track">
+                                    <div id="meterBackanswerFill" class="meter-fill meter-backanswer" style="width: 10%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Threat Matrix Info -->
+                            <div class="threat-matrix-box">
+                                <div style="color: white; font-weight: 700; margin-bottom: 0.3rem;">🌀 MOM LOGIC MONITOR</div>
+                                <div>Chains Active: <span id="momLogicChainCount" style="color: #facc15; font-weight: 700;">0/5</span></div>
+                                <div>Slipper Airborne Risk: <span id="slipperAirborneRisk" style="color: #f87171; font-weight: 700;">Minimal</span></div>
+                                <div style="margin-top: 0.4rem; font-size: 0.72rem; color: #94a3b8;">
+                                    Avoid saying: "I know", "Everyone else", "Calm down", "Not fair".
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+                 VIEW 4: AI MOM POST-ARGUMENT DEBRIEF & SCORING
+                 ============================================================ -->
+            <section id="viewAiDebrief" class="view-section">
+                <div class="ai-debrief-container">
+                    
+                    <!-- Verdict Header Card -->
+                    <div id="debriefVerdictCard" class="debrief-verdict-card">
+                        <span id="debriefVerdictBadge" class="verdict-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+                            SURVIVED WITH PENALTIES
+                        </span>
+                        <h2 id="debriefVerdictTitle" class="verdict-title">🤝 CONDITIONAL NEGOTIATED SETTLEMENT</h2>
+                        <div id="debriefVerdictQuote" class="verdict-quote">
+                            “Fine. But if I see one mess in this house, everything is cancelled.”
+                        </div>
+                        <p id="debriefVerdictSummary" class="verdict-summary">
+                            You managed to prevent physical projectile deployment by conceding to domestic chores and curfew reduction.
+                        </p>
+                    </div>
+
+                    <!-- Scores Grid -->
+                    <div class="scores-grid">
+                        <div class="score-card">
+                            <div id="scoreFinalVal" class="score-number" style="color: #38bdf8;">58%</div>
+                            <div class="score-label">Survival Score</div>
+                        </div>
+                        <div class="score-card">
+                            <div id="scoreLogicVal" class="score-number" style="color: #818cf8;">72%</div>
+                            <div class="score-label">Logical Reasoning</div>
+                        </div>
+                        <div class="score-card">
+                            <div id="scoreEmotionVal" class="score-number" style="color: #f43f5e;">45%</div>
+                            <div class="score-label">Emotional Control</div>
+                        </div>
+                        <div class="score-card">
+                            <div id="scoreDeescalateVal" class="score-number" style="color: #10b981;">65%</div>
+                            <div class="score-label">De-escalation</div>
+                        </div>
+                        <div class="score-card">
+                            <div id="scoreResistanceVal" class="score-number" style="color: #f59e0b;">88%</div>
+                            <div class="score-label">Mom Resistance</div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Argument Profile -->
+                    <div class="profile-card">
+                        <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: white; margin-bottom: 0.75rem;">
+                            🧬 YOUR MOM-ARGUMENT PROFILE
+                        </div>
+                        <div id="profileSummaryText" style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                            <!-- Dynamically loaded from localStorage -->
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="debrief-actions-row">
+                        <button id="btnDebriefTryAgain" class="btn btn-ai" style="padding: 0.9rem 2rem;">
+                            🔄 Try Harder Scenario
+                        </button>
+                        <button id="btnDebriefHome" class="btn btn-outline" style="padding: 0.9rem 2rem;">
+                            🏠 Back to Home
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal: Previous Crimes Database -->
+    <div id="modalCrimes" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">📂 PREVIOUS CRIMES DATABASE</h3>
+                <button id="btnCloseCrimesModal" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    When any of these keywords are referenced in conversation, the system triggers the Historical
+                    Incident Alert.
+                </p>
+
+                <table class="crimes-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Year</th>
+                            <th style="width: 48%;">Crime Description</th>
+                            <th style="width: 27%;">Keywords</th>
+                            <th style="width: 10%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="crimesTableBody">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+
+                <div
+                    style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+                    <div style="font-size: 0.8rem; font-weight: 700; color: var(--you-accent); margin-bottom: 0.5rem;">
+                        + LOG A NEW HISTORICAL CRIME
+                    </div>
+                    <div class="add-crime-row">
+                        <input type="number" id="newCrimeYear" class="input-text" style="max-width: 90px;"
+                            placeholder="2024" value="2024">
+                        <input type="text" id="newCrimeDesc" class="input-text"
+                            placeholder="e.g. Left bathroom light on...">
+                        <button id="btnAddCrimeBtn" class="btn btn-primary btn-sm">Add Crime</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/crimes.js"></script>
+    <script src="js/ai_situations.js"></script>
+    <script src="js/ai_speech.js"></script>
+    <script src="js/ai_scoring.js"></script>
+    <script src="js/ai_mom.js"></script>
+    <script>
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (AudioCtx) audioCtx = new AudioCtx();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        // High-Velocity Air Whoosh (Wind-up before the slap)
+        function playAirWhoosh(startTime) {
+            if (!soundEnabled) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            const t = startTime;
+            const duration = 0.22;
+            const bufferSize = Math.floor(ctx.sampleRate * duration);
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+
+            const noise = ctx.createBufferSource();
+            noise.buffer = buffer;
+
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.Q.setValueAtTime(3.0, t);
+            filter.frequency.setValueAtTime(350, t);
+            filter.frequency.exponentialRampToValueAtTime(2600, t + duration);
+
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(0.01, t);
+            gain.gain.linearRampToValueAtTime(0.4, t + duration * 0.7);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+
+            noise.start(t);
+        }
+
+        // Authentic High-Impact Chappal Slap Sound
+        function playAuthenticChappalSlap(startTime, volume = 1.0, pitchMult = 1.0) {
+            if (!soundEnabled) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
+            const t = startTime;
+
+            // Layer 1: High-frequency "CRACK / SNAP" (Surface contact)
+            const snapLen = Math.floor(ctx.sampleRate * 0.08);
+            const snapBuf = ctx.createBuffer(1, snapLen, ctx.sampleRate);
+            const sData = snapBuf.getChannelData(0);
+            for (let i = 0; i < snapLen; i++) {
+                sData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (snapLen * 0.2));
+            }
+            const snapSource = ctx.createBufferSource();
+            snapSource.buffer = snapBuf;
+
+            const snapFilter = ctx.createBiquadFilter();
+            snapFilter.type = 'bandpass';
+            snapFilter.frequency.setValueAtTime(2400 * pitchMult, t);
+            snapFilter.Q.setValueAtTime(2.0, t);
+
+            const snapGain = ctx.createGain();
+            snapGain.gain.setValueAtTime(1.2 * volume, t);
+            snapGain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+            snapSource.connect(snapFilter);
+            snapFilter.connect(snapGain);
+            snapGain.connect(ctx.destination);
+            snapSource.start(t);
+
+            // Layer 2: Resonant Rubber / Slipper Body "THWACK" (Body tone)
+            const thwackLen = Math.floor(ctx.sampleRate * 0.14);
+            const thwackBuf = ctx.createBuffer(1, thwackLen, ctx.sampleRate);
+            const tData = thwackBuf.getChannelData(0);
+            for (let i = 0; i < thwackLen; i++) {
+                tData[i] = (Math.random() * 2 - 1);
+            }
+            const thwackSource = ctx.createBufferSource();
+            thwackSource.buffer = thwackBuf;
+
+            const thwackFilter = ctx.createBiquadFilter();
+            thwackFilter.type = 'lowpass';
+            thwackFilter.frequency.setValueAtTime(1200 * pitchMult, t);
+            thwackFilter.frequency.exponentialRampToValueAtTime(180, t + 0.12);
+
+            const thwackGain = ctx.createGain();
+            thwackGain.gain.setValueAtTime(1.0 * volume, t);
+            thwackGain.gain.exponentialRampToValueAtTime(0.001, t + 0.13);
+
+            thwackSource.connect(thwackFilter);
+            thwackFilter.connect(thwackGain);
+            thwackGain.connect(ctx.destination);
+            thwackSource.start(t);
+
+            // Layer 3: Heavy Sub-Bass Fleshy Impact ("DUFF" thump)
+            const osc = ctx.createOscillator();
+            const oscGain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(230 * pitchMult, t);
+            osc.frequency.exponentialRampToValueAtTime(45, t + 0.14);
+
+            oscGain.gain.setValueAtTime(1.3 * volume, t);
+            oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+
+            osc.connect(oscGain);
+            oscGain.connect(ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.15);
+        }
+
+        // DOM Elements
+        const soundBtn = document.getElementById('btnSoundToggle');
+        const overlay = document.getElementById('chappalIntroOverlay');
+        const shockwave = document.getElementById('introShockwave');
+        const chappalIcon = document.getElementById('introChappalIcon');
+        const slipper = document.querySelector('.slipper-hero-icon');
+        const ctaBtn = document.getElementById('btnStartRealArgument');
+
+        soundBtn.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundBtn.textContent = soundEnabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+        });
+
+        let introDismissed = false;
+        let sequenceTimeouts = [];
+
+        function clearScheduledTimeouts() {
+            sequenceTimeouts.forEach(t => clearTimeout(t));
+            sequenceTimeouts = [];
+        }
+
+        // Auto-unlock AudioContext on any early interaction or on window focus
+        function unlockAudio() {
+            const ctx = getAudioContext();
+            if (ctx && ctx.state === 'suspended') {
+                ctx.resume();
+            }
+        }
+        ['pointerdown', 'mousedown', 'keydown', 'touchstart', 'focus', 'click'].forEach(evt => {
+            window.addEventListener(evt, unlockAudio, { once: false, passive: true });
+        });
+
+        // Exactly 3.0 Seconds Cinematic Chappal Sequence
+        function runCinematic3sSequence() {
+            clearScheduledTimeouts();
+            introDismissed = false;
+            overlay.classList.remove('fade-out');
+
+            // Attempt unlocking audio context immediately
+            unlockAudio();
+
+            // Reset animation
+            chappalIcon.style.animation = 'none';
+            void chappalIcon.offsetWidth;
+            chappalIcon.style.animation = 'chappalSlam3s 3s cubic-bezier(0.22, 1, 0.36, 1) forwards';
+
+            const ctx = getAudioContext();
+
+            // 1. T = 1.15s: Whoosh sound (Air swish as slipper raises high)
+            sequenceTimeouts.push(setTimeout(() => {
+                if (introDismissed) return;
+                const currentCtx = getAudioContext();
+                if (currentCtx) {
+                    if (currentCtx.state === 'suspended') currentCtx.resume();
+                    playAirWhoosh(currentCtx.currentTime);
+                }
+            }, 1150));
+
+            // 2. T = 1.40s: STRIKE 1 (SMACK! Perfectly in sync with CSS 46% keyframe)
+            sequenceTimeouts.push(setTimeout(() => {
+                if (introDismissed) return;
+                const currentCtx = getAudioContext();
+                if (currentCtx) {
+                    if (currentCtx.state === 'suspended') currentCtx.resume();
+                    playAuthenticChappalSlap(currentCtx.currentTime, 1.4, 1.0);
+                }
+
+                // Visual Impact 1
+                shockwave.classList.remove('active');
+                void shockwave.offsetWidth;
+                shockwave.classList.add('active');
+
+                document.body.classList.remove('screen-shaking');
+                void document.body.offsetWidth;
+                document.body.classList.add('screen-shaking');
+            }, 1400));
+
+            // 3. T = 1.70s: STRIKE 2 (Second WHACK! Perfectly in sync with CSS 58% keyframe)
+            sequenceTimeouts.push(setTimeout(() => {
+                if (introDismissed) return;
+                const currentCtx = getAudioContext();
+                if (currentCtx) {
+                    if (currentCtx.state === 'suspended') currentCtx.resume();
+                    playAuthenticChappalSlap(currentCtx.currentTime, 1.2, 1.2);
+                }
+
+                // Visual Impact 2
+                document.body.classList.remove('screen-shaking');
+                void document.body.offsetWidth;
+                document.body.classList.add('screen-shaking');
+            }, 1700));
+
+            // 4. T = 2.10s: Stop shaking
+            sequenceTimeouts.push(setTimeout(() => {
+                document.body.classList.remove('screen-shaking');
+            }, 2100));
+
+            // 5. T = 3.00s EXACTLY: Fade out overlay & lift blur to reveal website
+            sequenceTimeouts.push(setTimeout(() => {
+                if (!introDismissed) {
+                    introDismissed = true;
+                    overlay.classList.add('fade-out');
+                }
+            }, 3000));
+        }
+
+        // Start on First Click (to bypass browser audio autoplay restrictions)
+        let sequenceStarted = false;
+        document.addEventListener('click', () => {
+            if (!sequenceStarted) {
+                sequenceStarted = true;
+                const clickText = document.getElementById('clickToStartText');
+                if (clickText) clickText.style.display = 'none';
+                runCinematic3sSequence();
+            }
+        });
+
+        // Slipper on main page
+        if (slipper) {
+            slipper.addEventListener('click', () => {
+                const ctx = getAudioContext();
+                if (ctx) {
+                    if (ctx.state === 'suspended') ctx.resume();
+                    playAuthenticChappalSlap(ctx.currentTime, 1.2, 1.05);
+                }
+                slipper.style.transform = 'scale(1.35) rotate(25deg)';
+                document.body.classList.add('screen-shaking');
+                setTimeout(() => {
+                    slipper.style.transform = '';
+                    document.body.classList.remove('screen-shaking');
+                }, 300);
+            });
+        }
+
+        if (ctaBtn) {
+            ctaBtn.addEventListener('click', () => {
+                const ctx = getAudioContext();
+                if (ctx) {
+                    if (ctx.state === 'suspended') ctx.resume();
+                    playAuthenticChappalSlap(ctx.currentTime, 1.3, 1.0);
+                }
+                alert("🚀 Real Mom Argument Mode selected! (Step 2: Argument Setup & Topic Selector)");
+            });
+        }
+
+        // Crimes Database Modal Logic
+        const btnCrimesNav = document.getElementById('btnCrimesNav');
+        const modalCrimes = document.getElementById('modalCrimes');
+        const btnCloseCrimesModal = document.getElementById('btnCloseCrimesModal');
+        const crimesTableBody = document.getElementById('crimesTableBody');
+        const btnAddCrimeBtn = document.getElementById('btnAddCrimeBtn');
+        const newCrimeYear = document.getElementById('newCrimeYear');
+        const newCrimeDesc = document.getElementById('newCrimeDesc');
+        const btnStartAiArgument = document.getElementById('btnStartAiArgument');
+
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag));
+        }
+
+        function renderCrimesTable() {
+            if (!crimesTableBody || !window.crimesDB) return;
+            const crimes = window.crimesDB.crimes;
+            crimesTableBody.innerHTML = '';
+            crimes.forEach(c => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span class="crimes-year-badge">${c.year}</span></td>
+                    <td style="font-weight: 500;">${escapeHTML(c.crime)}</td>
+                    <td>${c.keywords.map(kw => `<span class="crimes-kw-badge">${escapeHTML(kw)}</span>`).join('')}</td>
+                    <td>
+                        <button class="btn-delete-crime" onclick="deleteCrimeEntry(${c.id})" title="Delete Crime">🗑️</button>
+                    </td>
+                `;
+                crimesTableBody.appendChild(row);
+            });
+        }
+
+        window.deleteCrimeEntry = function (id) {
+            if (window.crimesDB) {
+                window.crimesDB.deleteCrime(id);
+                renderCrimesTable();
+            }
+        };
+
+        if (btnCrimesNav && modalCrimes) {
+            btnCrimesNav.addEventListener('click', () => {
+                const ctx = getAudioContext();
+                if (ctx && ctx.state === 'suspended') ctx.resume();
+                modalCrimes.classList.add('active');
+                renderCrimesTable();
+            });
+        }
+
+        if (btnCloseCrimesModal && modalCrimes) {
+            btnCloseCrimesModal.addEventListener('click', () => {
+                modalCrimes.classList.remove('active');
+            });
+        }
+
+        if (modalCrimes) {
+            modalCrimes.addEventListener('click', (e) => {
+                if (e.target === modalCrimes) {
+                    modalCrimes.classList.remove('active');
+                }
+            });
+        }
+
+        if (btnAddCrimeBtn) {
+            btnAddCrimeBtn.addEventListener('click', () => {
+                const year = newCrimeYear.value.trim() || new Date().getFullYear();
+                const desc = newCrimeDesc.value.trim();
+                if (!desc) {
+                    alert("Please enter a crime description!");
+                    return;
+                }
+                if (window.crimesDB) {
+                    window.crimesDB.addCrime(year, desc);
+                    newCrimeDesc.value = '';
+                    renderCrimesTable();
+                }
+            });
+        }
+
+        // ============================================================
+        // VIEW ROUTING
+        // ============================================================
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            const target = document.getElementById(viewId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // ============================================================
+        // AI MOM CONTROLLER & EVENT WIRING
+        // ============================================================
+        let selectedPersonality = "strict";
+        let currentScenario = null;
+        let aiTurnCount = 0;
+        let sessionStrategies = [];
+        let sessionMistakes = [];
+
+        function refreshSetupScenario() {
+            if (!window.situationGenerator) return;
+            currentScenario = window.situationGenerator.generate(selectedPersonality);
+            
+            const tagEl = document.getElementById('setupScenarioTag');
+            const titleEl = document.getElementById('setupScenarioTitle');
+            const descEl = document.getElementById('setupScenarioDesc');
+            const stakesEl = document.getElementById('setupScenarioStakes');
+
+            if (tagEl) tagEl.textContent = currentScenario.category.toUpperCase();
+            if (titleEl) titleEl.textContent = currentScenario.title;
+            if (descEl) descEl.textContent = currentScenario.description;
+            if (stakesEl) stakesEl.textContent = `⚠️ Stakes: ${currentScenario.stake}`;
+        }
+
+        // Start AI Mom Button from Home
+        if (btnStartAiArgument) {
+            btnStartAiArgument.addEventListener('click', () => {
+                const ctx = getAudioContext();
+                if (ctx && ctx.state === 'suspended') ctx.resume();
+                playAuthenticChappalSlap(ctx ? ctx.currentTime : 0, 0.8, 1.1);
+                refreshSetupScenario();
+                switchView('viewAiSetup');
+            });
+        }
+
+        // Randomize scenario button
+        const btnRandomizeScenario = document.getElementById('btnRandomizeScenario');
+        if (btnRandomizeScenario) {
+            btnRandomizeScenario.addEventListener('click', () => {
+                refreshSetupScenario();
+                playAirWhoosh(getAudioContext() ? getAudioContext().currentTime : 0);
+            });
+        }
+
+        // Personality Cards Selector
+        document.querySelectorAll('.personality-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.personality-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedPersonality = card.getAttribute('data-personality') || 'strict';
+                refreshSetupScenario();
+            });
+        });
+
+        // Back to Home from Setup
+        const btnBackToHomeFromSetup = document.getElementById('btnBackToHomeFromSetup');
+        if (btnBackToHomeFromSetup) {
+            btnBackToHomeFromSetup.addEventListener('click', () => {
+                switchView('viewLanding');
+            });
+        }
+
+        // Enter Arena
+        const btnEnterAiArena = document.getElementById('btnEnterAiArena');
+        if (btnEnterAiArena) {
+            btnEnterAiArena.addEventListener('click', () => {
+                startAiArenaSession();
+            });
+        }
+
+        function startAiArenaSession() {
+            if (!currentScenario) refreshSetupScenario();
+            aiTurnCount = 1;
+            sessionStrategies = [];
+            sessionMistakes = [];
+
+            // Initialize Engine
+            const sessionData = window.aiMomEngine.initSession(selectedPersonality, currentScenario);
+            
+            // Switch View
+            switchView('viewAiArena');
+
+            // Update Top Bar
+            const arenaBadge = document.getElementById('arenaPersonaBadge');
+            const arenaTitle = document.getElementById('arenaScenarioTitle');
+            const arenaTurn = document.getElementById('arenaTurnCounter');
+            if (arenaBadge) arenaBadge.textContent = sessionData.personality.name;
+            if (arenaTitle) arenaTitle.textContent = currentScenario.title;
+            if (arenaTurn) arenaTurn.textContent = `Turn: 1/8`;
+
+            // Reset & Populate Chat Transcript
+            const transcript = document.getElementById('aiChatTranscript');
+            if (transcript) {
+                transcript.innerHTML = '';
+                appendChatMessage("MOM", sessionData.openingLine, null, null);
+            }
+
+            // Update Avatar
+            updateMomAvatar(sessionData.state.anger, sessionData.state.suspicion);
+            updateTelemetryDisplay(sessionData.state);
+
+            // Speak Opening Line
+            if (window.aiSpeechHandler) {
+                window.aiSpeechHandler.speakMomResponse(sessionData.openingLine, sessionData.state.anger, selectedPersonality, soundEnabled);
+            }
+        }
+
+        function updateMomAvatar(anger, suspicion) {
+            const icon = document.getElementById('momAvatarIcon');
+            const nameEl = document.getElementById('momAvatarName');
+            const moodEl = document.getElementById('momAvatarMood');
+
+            let emoji = "👩🏻";
+            let mood = "Disappointed";
+
+            if (anger >= 85) {
+                emoji = "🩴";
+                mood = "AIRBORNE SLIPPER PRIMED! TAKE COVER!";
+            } else if (anger >= 70) {
+                emoji = "🤬";
+                mood = "Volcanic Rage (Blood Pressure 240)";
+            } else if (anger >= 50) {
+                emoji = "😠";
+                mood = "Extremely Irritated";
+            } else if (suspicion >= 70) {
+                emoji = "🤨";
+                mood = "FBI Interrogation Mode";
+            } else if (anger <= 30) {
+                emoji = "😐";
+                mood = "De-escalating (Still Suspicious)";
+            }
+
+            if (icon) icon.textContent = emoji;
+            if (nameEl) nameEl.textContent = `Mom (${window.aiMomEngine.personalities[selectedPersonality]?.name || 'Mom'})`;
+            if (moodEl) moodEl.textContent = `Current Mood: ${mood}`;
+        }
+
+        function updateTelemetryDisplay(state) {
+            const angerFill = document.getElementById('meterAngerFill');
+            const angerVal = document.getElementById('meterAngerVal');
+            const patienceFill = document.getElementById('meterPatienceFill');
+            const patienceVal = document.getElementById('meterPatienceVal');
+            const suspicionFill = document.getElementById('meterSuspicionFill');
+            const suspicionVal = document.getElementById('meterSuspicionVal');
+            const backanswerFill = document.getElementById('meterBackanswerFill');
+            const backanswerVal = document.getElementById('meterBackanswerVal');
+            const threatBanner = document.getElementById('threatStatusBanner');
+            const chainCount = document.getElementById('momLogicChainCount');
+            const slipperRisk = document.getElementById('slipperAirborneRisk');
+
+            if (angerFill) angerFill.style.width = `${state.anger}%`;
+            if (angerVal) angerVal.textContent = `${state.anger}%`;
+
+            if (patienceFill) patienceFill.style.width = `${state.patience}%`;
+            if (patienceVal) patienceVal.textContent = `${state.patience}%`;
+
+            if (suspicionFill) suspicionFill.style.width = `${state.suspicion}%`;
+            if (suspicionVal) suspicionVal.textContent = `${state.suspicion}%`;
+
+            if (backanswerFill) backanswerFill.style.width = `${state.backAnsweringRisk}%`;
+            if (backanswerVal) backanswerVal.textContent = `${state.backAnsweringRisk}%`;
+
+            if (chainCount) chainCount.textContent = `${state.momLogicChain}/5`;
+
+            if (threatBanner) {
+                if (state.anger >= 85) {
+                    threatBanner.textContent = "🚨 CRITICAL: SLIPPER AIRBORNE! EVACUATE!";
+                    threatBanner.style.background = "rgba(239, 68, 68, 0.4)";
+                    threatBanner.style.color = "#fff";
+                } else if (state.anger >= 68) {
+                    threatBanner.textContent = "⚠️ DANGER: ARGUMENT HEAVILY ESCALATING";
+                    threatBanner.style.background = "rgba(239, 68, 68, 0.2)";
+                    threatBanner.style.color = "#f87171";
+                } else if (state.suspicion >= 75) {
+                    threatBanner.textContent = "🔍 HIGH SUSPICION: TIMELINE SCRUTINY ACTIVE";
+                    threatBanner.style.background = "rgba(99, 102, 241, 0.2)";
+                    threatBanner.style.color = "#818cf8";
+                } else if (state.anger <= 35) {
+                    threatBanner.textContent = "🕊️ TENTATIVE DE-ESCALATION IN PROGRESS";
+                    threatBanner.style.background = "rgba(16, 185, 129, 0.2)";
+                    threatBanner.style.color = "#34d399";
+                } else {
+                    threatBanner.textContent = "⚠️ ARGUMENT LEVEL: TENSION BUILDING";
+                    threatBanner.style.background = "rgba(234, 179, 8, 0.15)";
+                    threatBanner.style.color = "#fbbf24";
+                }
+            }
+
+            if (slipperRisk) {
+                if (state.anger >= 85) slipperRisk.textContent = "99.4% (Direct Hit Expected)";
+                else if (state.anger >= 60) slipperRisk.textContent = "65% (Foot Moving Towards Heel)";
+                else slipperRisk.textContent = "12% (Resting on Floor)";
+            }
+        }
+
+        function appendChatMessage(speaker, text, strategy = null, logicAlert = null) {
+            const transcript = document.getElementById('aiChatTranscript');
+            if (!transcript) return;
+
+            const bubble = document.createElement('div');
+            bubble.className = speaker === "MOM" ? "chat-bubble chat-bubble-mom" : "chat-bubble chat-bubble-you";
+
+            let headerHTML = '';
+            if (speaker === "MOM") {
+                headerHTML = `<span class="bubble-speaker">👩🏻 MOM</span>`;
+            } else {
+                const stratLabel = strategy ? strategy.label : 'Argument';
+                headerHTML = `
+                    <div class="bubble-speaker">
+                        <span>YOU</span>
+                        <span class="bubble-strategy-badge">${escapeHTML(stratLabel)}</span>
+                    </div>
+                `;
+            }
+
+            let alertHTML = '';
+            if (logicAlert) {
+                alertHTML = `<div class="bubble-logic-alert">🌀 MOM LOGIC DETECTED: ${escapeHTML(logicAlert)}</div>`;
+            }
+
+            bubble.innerHTML = `
+                ${headerHTML}
+                <div>${escapeHTML(text)}</div>
+                ${alertHTML}
+            `;
+
+            transcript.appendChild(bubble);
+            transcript.scrollTop = transcript.scrollHeight;
+        }
+
+        // Send User Turn
+        function submitUserExcuse(text) {
+            const clean = text.trim();
+            if (!clean) return;
+
+            const inputEl = document.getElementById('aiUserInput');
+            if (inputEl) inputEl.value = '';
+
+            // 1. Process turn
+            const result = window.aiMomEngine.processUserTurn(clean);
+            aiTurnCount++;
+            sessionStrategies.push(result.strategy.type);
+            if (result.backAnswerCheck.detected) {
+                sessionMistakes.push(`Used forbidden phrase: "${result.backAnswerCheck.triggers[0].phrase}"`);
+            }
+            if (result.contradiction) {
+                sessionMistakes.push(`Contradicted previous claim about ${result.contradiction.pastClaim}`);
+            }
+
+            // 2. Append User message
+            appendChatMessage("YOU", clean, result.strategy, null);
+
+            // 3. Audio & Shake feedback
+            const ctx = getAudioContext();
+            if (result.state.anger >= 80) {
+                document.body.classList.add('screen-shaking');
+                setTimeout(() => document.body.classList.remove('screen-shaking'), 350);
+                if (ctx) playAuthenticChappalSlap(ctx.currentTime, 1.2, 1.1);
+            }
+
+            // 4. Update Turn Counter
+            const arenaTurn = document.getElementById('arenaTurnCounter');
+            if (arenaTurn) arenaTurn.textContent = `Turn: ${Math.min(8, aiTurnCount)}/8`;
+
+            // 5. Update Telemetry & Avatar
+            updateMomAvatar(result.state.anger, result.state.suspicion);
+            updateTelemetryDisplay(result.state);
+
+            // 6. Append Mom Reply after slight delay
+            setTimeout(() => {
+                appendChatMessage("MOM", result.reply, null, result.logicCategory);
+                if (window.aiSpeechHandler) {
+                    window.aiSpeechHandler.speakMomResponse(result.reply, result.state.anger, selectedPersonality, soundEnabled);
+                }
+
+                // Check Game Over
+                if (result.isGameOver && result.isGameOver.over) {
+                    setTimeout(() => {
+                        finishAiArgumentSession();
+                    }, 2200);
+                }
+            }, 500);
+        }
+
+        // Chat Input Events
+        const btnSendAiText = document.getElementById('btnSendAiText');
+        const aiUserInput = document.getElementById('aiUserInput');
+        if (btnSendAiText && aiUserInput) {
+            btnSendAiText.addEventListener('click', () => {
+                submitUserExcuse(aiUserInput.value);
+            });
+            aiUserInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    submitUserExcuse(aiUserInput.value);
+                }
+            });
+        }
+
+        // Quick Excuse Chips
+        document.querySelectorAll('.quick-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const text = chip.getAttribute('data-text');
+                if (text) submitUserExcuse(text);
+            });
+        });
+
+        // Mic / Voice Argument Mode
+        const btnAiVoiceMic = document.getElementById('btnAiVoiceMic');
+        if (btnAiVoiceMic && window.aiSpeechHandler) {
+            window.aiSpeechHandler.initRecognition(
+                (transcript) => {
+                    submitUserExcuse(transcript);
+                },
+                (isListening, statusMsg) => {
+                    if (isListening) {
+                        btnAiVoiceMic.classList.add('listening');
+                    } else {
+                        btnAiVoiceMic.classList.remove('listening');
+                    }
+                }
+            );
+
+            btnAiVoiceMic.addEventListener('click', () => {
+                const ctx = getAudioContext();
+                if (ctx && ctx.state === 'suspended') ctx.resume();
+
+                if (window.aiSpeechHandler.isListening) {
+                    window.aiSpeechHandler.stopListening();
+                } else {
+                    window.aiSpeechHandler.startListening();
+                }
+            });
+        }
+
+        // Surrender / End Argument Button
+        const btnEndArgumentEarly = document.getElementById('btnEndArgumentEarly');
+        if (btnEndArgumentEarly) {
+            btnEndArgumentEarly.addEventListener('click', () => {
+                if (confirm("Are you sure you want to surrender? Mom will declare total victory.")) {
+                    window.aiMomEngine.state.anger = Math.min(100, window.aiMomEngine.state.anger + 15);
+                    finishAiArgumentSession();
+                }
+            });
+        }
+
+        // Finish Session & Show Debrief
+        function finishAiArgumentSession() {
+            if (window.aiSpeechHandler) window.aiSpeechHandler.cancel();
+
+            const sessionData = {
+                turns: window.aiMomEngine.conversationMemory,
+                finalState: { ...window.aiMomEngine.state },
+                strategiesUsed: sessionStrategies,
+                mistakesMade: sessionMistakes,
+                situation: currentScenario
+            };
+
+            const report = window.aiScoringEngine.calculateScore(sessionData);
+
+            // Populate Debrief Screen
+            const vBadge = document.getElementById('debriefVerdictBadge');
+            const vTitle = document.getElementById('debriefVerdictTitle');
+            const vQuote = document.getElementById('debriefVerdictQuote');
+            const vSummary = document.getElementById('debriefVerdictSummary');
+
+            if (vBadge) {
+                vBadge.textContent = report.verdict.badge;
+                vBadge.style.color = report.verdict.color;
+                vBadge.style.background = `${report.verdict.color}22`;
+            }
+            if (vTitle) {
+                vTitle.textContent = report.verdict.title;
+                vTitle.style.color = report.verdict.color;
+            }
+            if (vQuote) vQuote.textContent = report.verdict.quote;
+            if (vSummary) vSummary.textContent = report.verdict.summary;
+
+            // Populate Scores
+            const sFinal = document.getElementById('scoreFinalVal');
+            const sLogic = document.getElementById('scoreLogicVal');
+            const sEmotion = document.getElementById('scoreEmotionVal');
+            const sDeescalate = document.getElementById('scoreDeescalateVal');
+            const sResistance = document.getElementById('scoreResistanceVal');
+
+            if (sFinal) sFinal.textContent = `${report.scores.finalScore}%`;
+            if (sLogic) sLogic.textContent = `${report.scores.logicalReasoning}%`;
+            if (sEmotion) sEmotion.textContent = `${report.scores.emotionalControl}%`;
+            if (sDeescalate) sDeescalate.textContent = `${report.scores.deEscalation}%`;
+            if (sResistance) sResistance.textContent = `${report.scores.momResistance}%`;
+
+            // Populate Profile Summary
+            const profile = window.aiScoringEngine.loadProfile();
+            const profileText = document.getElementById('profileSummaryText');
+            if (profileText) {
+                const mostUsedStrategy = Object.entries(profile.strategyCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'logical';
+                profileText.innerHTML = `
+                    <div>• Simulations Completed: <strong>${profile.simulationsCompleted}</strong> (${profile.totalSurvived} Survived, ${profile.totalSlippered} Direct Slipper Impacts)</div>
+                    <div>• Average Survival Score: <strong>${profile.averageSurvivalScore}%</strong></div>
+                    <div>• Primary Defense Strategy: <strong style="text-transform: capitalize;">${mostUsedStrategy}</strong></div>
+                    <div>• Maternal Surveillance Alert: <em>${report.mistakes.length > 0 ? report.mistakes[0] : 'Avoid stating facts in emotional arguments'}</em></div>
+                `;
+            }
+
+            switchView('viewAiDebrief');
+        }
+
+        // Debrief Action Buttons
+        const btnDebriefTryAgain = document.getElementById('btnDebriefTryAgain');
+        const btnDebriefHome = document.getElementById('btnDebriefHome');
+        if (btnDebriefTryAgain) {
+            btnDebriefTryAgain.addEventListener('click', () => {
+                refreshSetupScenario();
+                switchView('viewAiSetup');
+            });
+        }
+        if (btnDebriefHome) {
+            btnDebriefHome.addEventListener('click', () => {
+                switchView('viewLanding');
+            });
+        }
+    </script>
+</body>
+
+</html>
