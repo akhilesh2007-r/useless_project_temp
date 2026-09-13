@@ -390,6 +390,13 @@
                     
                     <!-- Verdict Header Card -->
                     <div id="debriefVerdictCard" class="debrief-verdict-card">
+                        <!-- Fun Animated Flying Chappal with Sound -->
+                        <div class="debrief-chappal-box" id="debriefChappalBox" title="Tap the Chappal for a weird bounce!">
+                            <div class="debrief-chappal-impact-ring" id="debriefImpactRing"></div>
+                            <div class="debrief-chappal-icon" id="debriefChappalIcon">🩴</div>
+                            <div class="debrief-sparks" id="debriefSparks">💥</div>
+                        </div>
+
                         <span id="debriefVerdictBadge" class="verdict-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
                             SURVIVED WITH PENALTIES
                         </span>
@@ -622,6 +629,84 @@
             oscGain.connect(ctx.destination);
             osc.start(t);
             osc.stop(t + 0.15);
+        }
+
+        // Weird & Fun Cartoon Chappal Sound (Slide Whistle + Boing + Fleshy Bonk + Rubber Wobble)
+        function playWeirdChappalSound(startTime) {
+            if (!soundEnabled) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            if (ctx.state === 'suspended') ctx.resume();
+
+            const t = startTime || ctx.currentTime;
+
+            // 1. Cartoon Slide / Falling Pitch Wobble ("WHEEEE-O-WOP")
+            const slideOsc = ctx.createOscillator();
+            const slideGain = ctx.createGain();
+            const lfo = ctx.createOscillator();
+            const lfoGain = ctx.createGain();
+
+            slideOsc.type = 'sine';
+            slideOsc.frequency.setValueAtTime(850, t);
+            slideOsc.frequency.exponentialRampToValueAtTime(160, t + 0.32);
+
+            // Vibrato / funny wobble
+            lfo.type = 'sine';
+            lfo.frequency.setValueAtTime(22, t);
+            lfoGain.gain.setValueAtTime(45, t);
+            lfo.connect(slideOsc.frequency);
+            lfo.start(t);
+            lfo.stop(t + 0.35);
+
+            slideGain.gain.setValueAtTime(0.35, t);
+            slideGain.gain.exponentialRampToValueAtTime(0.001, t + 0.33);
+
+            slideOsc.connect(slideGain);
+            slideGain.connect(ctx.destination);
+            slideOsc.start(t);
+            slideOsc.stop(t + 0.35);
+
+            // 2. Comical Rubbery "BOINGGG" Twang (starts at t + 0.28s, right at impact)
+            const boingTime = t + 0.28;
+            const boingOsc = ctx.createOscillator();
+            const boingGain = ctx.createGain();
+
+            boingOsc.type = 'triangle';
+            boingOsc.frequency.setValueAtTime(140, boingTime);
+            boingOsc.frequency.linearRampToValueAtTime(520, boingTime + 0.06);
+            boingOsc.frequency.exponentialRampToValueAtTime(85, boingTime + 0.45);
+
+            boingGain.gain.setValueAtTime(0.8, boingTime);
+            boingGain.gain.exponentialRampToValueAtTime(0.001, boingTime + 0.45);
+
+            boingOsc.connect(boingGain);
+            boingGain.connect(ctx.destination);
+            boingOsc.start(boingTime);
+            boingOsc.stop(boingTime + 0.46);
+
+            // 3. Wet Rubbery "SQUISH-SLAP" (at boingTime)
+            playAuthenticChappalSlap(boingTime, 1.4, 1.25);
+
+            // 4. Cartoon Spring Vibrato Aftermath ("wub-wub-wub")
+            const springOsc = ctx.createOscillator();
+            const springGain = ctx.createGain();
+            springOsc.type = 'sawtooth';
+            springOsc.frequency.setValueAtTime(75, boingTime + 0.05);
+            springOsc.frequency.linearRampToValueAtTime(180, boingTime + 0.15);
+            springOsc.frequency.exponentialRampToValueAtTime(40, boingTime + 0.4);
+
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(450, boingTime);
+
+            springGain.gain.setValueAtTime(0.4, boingTime + 0.05);
+            springGain.gain.exponentialRampToValueAtTime(0.001, boingTime + 0.4);
+
+            springOsc.connect(filter);
+            filter.connect(springGain);
+            springGain.connect(ctx.destination);
+            springOsc.start(boingTime + 0.05);
+            springOsc.stop(boingTime + 0.42);
         }
 
         // DOM Elements
@@ -1269,6 +1354,53 @@
             }
 
             switchView('viewAiDebrief');
+            setTimeout(() => {
+                triggerDebriefChappalAnimation();
+            }, 120);
+        }
+
+        function triggerDebriefChappalAnimation() {
+            const chappalBox = document.getElementById('debriefChappalBox');
+            const chappalIcon = document.getElementById('debriefChappalIcon');
+            const ring = document.getElementById('debriefImpactRing');
+            const sparks = document.getElementById('debriefSparks');
+
+            if (!chappalBox || !chappalIcon) return;
+
+            // Reset and trigger cartoon fly-in
+            chappalIcon.style.animation = 'none';
+            void chappalIcon.offsetWidth;
+            chappalIcon.style.animation = 'chappalFunFlyIn 1.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, chappalGoofyWobble 2.5s ease-in-out 1.2s infinite';
+
+            // Play weird & fun cartoon sound!
+            playWeirdChappalSound();
+
+            // At impact (around 600ms): trigger shock ring, sparks & comic bounce!
+            setTimeout(() => {
+                if (ring) {
+                    ring.classList.remove('active');
+                    void ring.offsetWidth;
+                    ring.classList.add('active');
+                }
+                if (sparks) {
+                    sparks.classList.remove('active');
+                    void sparks.offsetWidth;
+                    sparks.classList.add('active');
+                }
+                const card = document.getElementById('debriefVerdictCard');
+                if (card) {
+                    card.style.transform = 'translateY(6px) scale(0.99)';
+                    setTimeout(() => card.style.transform = '', 180);
+                }
+            }, 600);
+        }
+
+        // Allow clicking the debrief chappal for repeat weird bonks!
+        const debriefChappalBox = document.getElementById('debriefChappalBox');
+        if (debriefChappalBox) {
+            debriefChappalBox.addEventListener('click', () => {
+                triggerDebriefChappalAnimation();
+            });
         }
 
         // Debrief Action Buttons
