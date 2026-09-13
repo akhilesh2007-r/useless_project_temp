@@ -536,23 +536,22 @@
 
                             <!-- Fun Quick Phrases -->
                             <div class="quick-chips-row">
-                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="Can I please go outside with friends?">🙋 Can I go outside?</span>
-                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="Everyone else in my class is going!">👥 Everyone is going</span>
-                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="I will clean my room tomorrow I promise!">🧹 Clean room later</span>
-                                <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="If everyone jumps in a well will you jump?">🌀 Well-jumping</span>
-                                <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="Because I said so! That is why!">🚨 Because I said so</span>
-                                <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="Look at Sharma ji's son, he never goes out!">📊 Sharma ji's son</span>
-                                <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="You are on that phone 24 hours all day!">⏳ Phone 24 hours</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="Mom, please listen to my side of the story!">✋ Listen to me</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="Everyone else in my class is going outside!">👥 Everyone is going</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="I already finished all my homework and studied for 3 hours!">📚 Finished homework</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="I will clean my entire room tomorrow morning, I promise!">🧹 Clean room later</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="Why do you always bring up Sharma ji's son every single time?!">📊 Why Sharma ji?</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="I was only on the phone for 5 minutes, not 24 hours!">📱 Only 5 mins on phone</span>
                             </div>
 
                             <!-- Chat Input Bar -->
                             <div class="chat-input-bar">
-                                <input type="text" id="realInputText" class="chat-input-box" placeholder="Speak into mic or type statement..." autocomplete="off">
-                                <button id="btnRealMic" class="btn-mic" style="display:flex;align-items:center;gap:6px;padding:0.65rem 1.1rem;" title="Toggle Microphone Listening">
-                                    🎙️ <span id="micBtnText" style="font-size:0.75rem;font-weight:bold;">Voice ON</span>
+                                <input type="text" id="realInputText" class="chat-input-box" placeholder="Type your excuse or defense..." autocomplete="off">
+                                <button id="btnRealMic" class="btn-mic" style="display:flex;align-items:center;gap:6px;padding:0.65rem 1.1rem;" title="Make Mom Speak">
+                                    🎙️ <span id="micBtnText" style="font-size:0.75rem;font-weight:bold;">Mom Speaks</span>
                                 </button>
                                 <button id="btnRealSend" class="btn btn-primary" style="padding: 0.65rem 1.4rem; font-weight: 700;">
-                                    Log
+                                    Send Excuse
                                 </button>
                             </div>
                         </div>
@@ -1930,9 +1929,9 @@
                 chatFeed.innerHTML = `
                     <div class="chat-placeholder">
                         <div style="font-size: 2.5rem; margin-bottom: 0.5rem; animation: pulse 2s infinite;">🎙️</div>
-                        <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Live Voice Conversation Ready!</div>
-                        <div style="font-size: 0.85rem; color: #94a3b8; max-width: 340px; line-height: 1.5;">
-                            Speak into your mic! Words stream live into the chat. When you pause (speech gap), Mom takes the turn and speaks back!
+                        <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Voice Battle Ready!</div>
+                        <div style="font-size: 0.85rem; color: #94a3b8; max-width: 360px; line-height: 1.5;">
+                            Click <strong>🎙️ Mom Speaks</strong> to hear Mom's scolding live, or send your excuse below to defend yourself!
                         </div>
                     </div>
                 `;
@@ -2188,12 +2187,12 @@
             if (!realInputText) return;
             const text = realInputText.value;
             if (!text || !text.trim()) return;
-            const spk = activeRealSpeaker;
-            logRealTurn(spk, text);
+            setRealSpeaker('YOU');
+            logRealTurn('YOU', text);
             realInputText.value = '';
             realInputText.focus();
 
-            if (spk === 'YOU' && autoGapDetection) {
+            if (autoGapDetection) {
                 if (speechGapTimeout) clearTimeout(speechGapTimeout);
                 speechGapTimeout = setTimeout(() => {
                     triggerSpeechGapTurn(text);
@@ -2216,12 +2215,11 @@
         // 7. Quick Chips Click with Auto Gap Detection
         document.querySelectorAll('.real-quick-chip').forEach(chip => {
             chip.addEventListener('click', () => {
-                const speaker = chip.getAttribute('data-speaker') || activeRealSpeaker;
                 const text = chip.getAttribute('data-text') || chip.textContent.trim();
-                setRealSpeaker(speaker);
-                logRealTurn(speaker, text);
+                setRealSpeaker('YOU');
+                logRealTurn('YOU', text);
 
-                if (speaker === 'YOU' && autoGapDetection) {
+                if (autoGapDetection) {
                     if (speechGapTimeout) clearTimeout(speechGapTimeout);
                     speechGapTimeout = setTimeout(() => {
                         triggerSpeechGapTurn(text);
@@ -2246,24 +2244,31 @@
         let acousticStatementIndex = 0;
         let activeAcousticPhrase = "";
 
-        const acousticExcusePool = [
-            "Mom, please listen to my side of the story just once!",
-            "Everyone else in my class got permission to go outside!",
-            "I already finished all my homework and studied for hours!",
-            "Why do you always bring up Sharma ji's son every single time?!",
-            "I promise with my whole heart that I will clean my entire room tomorrow!",
-            "You always blame the phone for literally everything that happens!",
-            "I only spent ten minutes on the phone, not twenty-four hours!",
-            "Don't tell me to calm down when you are holding the slipper in your hand!"
+        const acousticMomQuotesPool = [
+            "Because I said so! That is why! Don't argue with me!",
+            "24 hours that phone is glued to your hands! Throw it in the dustbin!",
+            "If your friend Sharma ji's son jumps into a well, will you also jump?!",
+            "Look at Sharma ji's son! He wakes up at 4 AM and got 99% in math!",
+            "Who will clean this room?! Is this a bedroom or a municipal garbage dump?!",
+            "Did you think I was born yesterday?! I know every trick you are planning in that head!",
+            "I work day and night for this entire family and this is the respect I get in return?!",
+            "You have an answer ready for everything, except on your final exam paper!",
+            "Remember what you did in 2022 when you spilled dal on the brand new carpet?!",
+            "Am I talking to a human being or are my words bouncing off the wall?!",
+            "Wait until your father comes home tonight, then we will see who is right!",
+            "Eat some soaked almonds in the morning so your brain will actually work!",
+            "Money doesn't grow on the balcony money plant! Stop wasting everything!"
         ];
 
-        function renderInterimBubble(text) {
+        function renderInterimBubble(text, speaker = 'MOM') {
             const chatFeed = document.getElementById('realChatFeed');
-            const realInputText = document.getElementById('realInputText');
             const statusDetail = document.getElementById('realVoiceStatusDetail');
 
-            if (realInputText) realInputText.value = text;
-            if (statusDetail) statusDetail.innerHTML = `<em>"${escapeHTML(text)}"</em>`;
+            if (statusDetail) {
+                statusDetail.innerHTML = speaker === 'MOM' ?
+                    `👩🏻 <span style="color:#ff3366;font-weight:700;">Mom saying: "${escapeHTML(text)}"</span>` :
+                    `🧑 <span style="color:#38bdf8;">"${escapeHTML(text)}"</span>`;
+            }
 
             if (chatFeed) {
                 const placeholder = chatFeed.querySelector('.chat-placeholder');
@@ -2275,16 +2280,120 @@
                     interimBubble.id = 'realInterimBubble';
                     chatFeed.appendChild(interimBubble);
                 }
-                interimBubble.className = `real-bubble real-bubble-interim ${activeRealSpeaker === 'YOU' ? 'real-bubble-you' : 'real-bubble-mom'}`;
+                interimBubble.className = `real-bubble real-bubble-interim ${speaker === 'MOM' ? 'real-bubble-mom' : 'real-bubble-you'}`;
                 interimBubble.innerHTML = `
                     <div class="real-bubble-header">
-                        <span>${activeRealSpeaker === 'YOU' ? '🧑 You' : '👩🏻 Mom'} (speaking live...)</span>
+                        <span>${speaker === 'MOM' ? '👩🏻 Mom' : '🧑 You'} (speaking live...)</span>
                         <span class="speaking-indicator-dots"><span></span><span></span><span></span></span>
                     </div>
-                    <div>${escapeHTML(text)}</div>
+                    <div style="font-weight:600; color: ${speaker === 'MOM' ? '#fda4af' : '#bae6fd'};">${escapeHTML(text)}</div>
                 `;
                 chatFeed.scrollTop = chatFeed.scrollHeight;
             }
+        }
+
+        function triggerMomSpeakingTurn() {
+            if (isMomReplying) return;
+            isMomReplying = true;
+
+            // Stop any pending speech gap timer
+            if (speechGapTimeout) {
+                clearTimeout(speechGapTimeout);
+                speechGapTimeout = null;
+            }
+
+            setRealSpeaker('MOM');
+
+            // Pick Mom quote (contextual comeback if son spoke previously, else random maternal reprimand)
+            let momQuote = "";
+            if (lastUserTurnText && Math.random() > 0.3) {
+                momQuote = generateMomAutoComeback(lastUserTurnText);
+            } else {
+                momQuote = acousticMomQuotesPool[acousticStatementIndex % acousticMomQuotesPool.length];
+                acousticStatementIndex++;
+            }
+
+            const btnMic = document.getElementById('btnRealMic');
+            const micText = document.getElementById('micBtnText');
+            const statusText = document.getElementById('realMicStatusText');
+            const statusDetail = document.getElementById('realVoiceStatusDetail');
+
+            if (btnMic) {
+                btnMic.classList.add('listening');
+                btnMic.classList.add('speaking-burst');
+            }
+            if (micText) micText.textContent = 'Mom Speaking...';
+            if (statusText) {
+                statusText.textContent = 'MOM SCOLDING';
+                statusText.style.color = '#ff3366';
+            }
+            if (statusDetail) {
+                statusDetail.innerHTML = `👩🏻 <span style="color:#ff3366;font-weight:700;">Mom is scolding right now!</span>`;
+            }
+
+            const words = momQuote.split(' ');
+            let wordIdx = 0;
+            let livePhrase = "";
+
+            updateMicBars(55);
+
+            if (acousticWordTimer) clearInterval(acousticWordTimer);
+            acousticWordTimer = setInterval(() => {
+                if (wordIdx < words.length) {
+                    livePhrase += (wordIdx > 0 ? " " : "") + words[wordIdx];
+                    wordIdx++;
+                    renderInterimBubble(livePhrase, 'MOM');
+                    updateMicBars(22 + Math.random() * 38);
+                } else {
+                    clearInterval(acousticWordTimer);
+                    acousticWordTimer = null;
+                    updateMicBars(0);
+
+                    if (btnMic) btnMic.classList.remove('speaking-burst');
+
+                    // Log Mom's turn in chat
+                    logRealTurn('MOM', livePhrase);
+
+                    // Audio speech out loud with Mom's strict voice
+                    if (window.aiSpeechHandler) {
+                        const anger = window.realMomEngine ? Math.max(65, window.realMomEngine.momAnger) : 80;
+                        window.aiSpeechHandler.speakMomResponse(livePhrase, anger, "strict", true);
+                    }
+
+                    const speechDuration = Math.max(2600, Math.min(6500, livePhrase.length * 68));
+
+                    setTimeout(() => {
+                        const chatFeed = document.getElementById('realChatFeed');
+                        if (chatFeed) {
+                            const banner = document.createElement('div');
+                            banner.className = 'turn-detected-banner';
+                            banner.style.background = 'rgba(56, 189, 248, 0.15)';
+                            banner.style.color = '#38bdf8';
+                            banner.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                            banner.innerHTML = `<span>👩🏻 Mom said: "${escapeHTML(livePhrase)}"</span> <span>👉 Son's turn: Send an excuse below!</span>`;
+                            chatFeed.appendChild(banner);
+                            chatFeed.scrollTop = chatFeed.scrollHeight;
+                        }
+
+                        // Return turn to Son
+                        setRealSpeaker('YOU');
+                        isMomReplying = false;
+
+                        if (btnMic) btnMic.classList.remove('listening');
+                        if (micText) micText.textContent = 'Mom Speaks';
+                        if (statusText) {
+                            statusText.textContent = 'YOUR TURN';
+                            statusText.style.color = '#38bdf8';
+                        }
+                        if (statusDetail) {
+                            statusDetail.innerHTML = `🧑 <span style="color:#38bdf8;">Your turn! Type your excuse or click Send</span>`;
+                        }
+
+                        const realInputText = document.getElementById('realInputText');
+                        if (realInputText) realInputText.focus();
+                    }, speechDuration);
+                }
+            }, 260);
         }
 
         function updateMicBars(vol) {
@@ -2299,7 +2408,7 @@
 
             const btnMic = document.getElementById('btnRealMic');
             if (vol > 15) {
-                bars.forEach(b => b.style.background = '#38bdf8');
+                bars.forEach(b => b.style.background = '#ff3366');
                 if (btnMic) btnMic.classList.add('speaking-burst');
             } else {
                 bars.forEach(b => b.style.background = '#4ade80');
@@ -2362,8 +2471,8 @@
                     updateMicBars(volume);
 
                     // Voice Activity Detection if Mom isn't currently speaking
-                    if (!isMomReplying && activeRealSpeaker === 'YOU') {
-                        if (volume >= 13) {
+                    if (!isMomReplying) {
+                        if (volume >= 18) {
                             handleMicVoiceSpoken(volume);
                         } else {
                             handleMicVoiceSilence();
@@ -2378,10 +2487,6 @@
         }
 
         function handleMicVoiceSpoken(volume) {
-            if (acousticSilenceTimer) {
-                clearTimeout(acousticSilenceTimer);
-                acousticSilenceTimer = null;
-            }
             if (speechGapTimeout) {
                 clearTimeout(speechGapTimeout);
                 speechGapTimeout = null;
@@ -2390,48 +2495,14 @@
             // If Google STT is actively supplying transcripts, don't simulate
             if (!isGoogleSTTBlocked) return;
 
-            // Brave Shielded Mode: As user speaks into mic, stream lively argument phrases!
-            if (!acousticSpeakingActive) {
-                acousticSpeakingActive = true;
-                const poolItem = acousticExcusePool[acousticStatementIndex % acousticExcusePool.length];
-                acousticStatementIndex++;
-                const words = poolItem.split(' ');
-                let wordIdx = 0;
-                activeAcousticPhrase = "";
-
-                if (acousticWordTimer) clearInterval(acousticWordTimer);
-                acousticWordTimer = setInterval(() => {
-                    if (!acousticSpeakingActive || isMomReplying) {
-                        clearInterval(acousticWordTimer);
-                        return;
-                    }
-                    if (wordIdx < words.length) {
-                        activeAcousticPhrase += (wordIdx > 0 ? " " : "") + words[wordIdx];
-                        wordIdx++;
-                        renderInterimBubble(activeAcousticPhrase);
-                    }
-                }, 300);
+            // In Shielded/Acoustic mode: voice sound triggers Mom's scolding response!
+            if (!isMomReplying) {
+                triggerMomSpeakingTurn();
             }
         }
 
         function handleMicVoiceSilence() {
-            if (acousticSpeakingActive && !acousticSilenceTimer) {
-                acousticSilenceTimer = setTimeout(() => {
-                    acousticSpeakingActive = false;
-                    if (acousticWordTimer) clearInterval(acousticWordTimer);
-
-                    if (activeAcousticPhrase && activeAcousticPhrase.trim()) {
-                        const finalSpoken = activeAcousticPhrase.trim();
-                        activeAcousticPhrase = "";
-
-                        logRealTurn('YOU', finalSpoken);
-
-                        if (autoGapDetection) {
-                            triggerSpeechGapTurn(finalSpoken);
-                        }
-                    }
-                }, 1300);
-            }
+            // Silence handled
         }
 
         function initNativeSpeechRecognition() {
@@ -2472,7 +2543,7 @@
                     }
 
                     if (interimTranscript.trim()) {
-                        renderInterimBubble(interimTranscript.trim());
+                        renderInterimBubble(interimTranscript.trim(), activeRealSpeaker);
                         if (speechGapTimeout) clearTimeout(speechGapTimeout);
                     }
 
@@ -2591,7 +2662,7 @@
             chip.addEventListener('click', () => {
                 const phrase = chip.getAttribute('data-speak') || chip.textContent.trim();
                 setRealSpeaker('YOU');
-                renderInterimBubble(phrase);
+                renderInterimBubble(phrase, 'YOU');
                 setTimeout(() => {
                     logRealTurn('YOU', phrase);
                     if (autoGapDetection) {
@@ -2628,15 +2699,19 @@
 
         const btnRealMic = document.getElementById('btnRealMic');
         if (btnRealMic) {
-            btnRealMic.addEventListener('click', () => {
+            btnRealMic.addEventListener('click', async () => {
                 const ctx = getAudioContext();
-                if (ctx && ctx.state === 'suspended') ctx.resume();
-
-                if (isRealListening) {
-                    stopRealListeningSystem();
-                } else {
-                    startRealListeningSystem();
+                if (ctx && ctx.state === 'suspended') {
+                    try { await ctx.resume(); } catch(e) {}
                 }
+
+                // If not yet listening, start mic hardware stream for visualizer bars
+                if (!isRealListening) {
+                    await startRealListeningSystem();
+                }
+
+                // Trigger Mom speaking with live words & voice scolding!
+                triggerMomSpeakingTurn();
             });
         }
 
