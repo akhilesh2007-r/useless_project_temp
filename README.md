@@ -9,14 +9,24 @@
 - Team Lead: Akhilesh R - MACE
 - Member 2: Aswin Suresh - MACE
 
+
 ### Project Description
-An absurd, over-engineered conversational battle simulator that scientifically proves you have a 0% statistical probability of winning an argument with an Indian mother. Features dynamic everyday household crises, real-time maternal anger tracking, a flying chappal ballistic threat meter, and an inescapable guilt matrix.
+
+Argument with Mom Simulator is an AI-powered simulator where an LLM generates random, realistic everyday situations and becomes an unpredictable AI Mom for the user to handle.
+The system analyzes the user's responses using speech recognition, NLP, sentiment, anger, confidence, escalation, and argument patterns while the AI Mom dynamically adapts to the conversation.
+It turns completely unnecessary arguments into an interactive training experience, helping users practice handling similar situations before facing them in real life.
 
 ### The Problem (that doesn't exist)
-For generations, children have foolishly believed that presenting "rational logic", "factual evidence", and "calm counterarguments" during household disputes would help their case. In reality, presenting logic to an Indian mother is universally classified under maternal jurisprudence as **Aggravated Back-Answering** (+25% Chappal Airborne Risk). The world lacked a rigorous simulator to model this inevitable defeat before real-world damage occurs.
+
+Nobody is properly prepared for the highly unpredictable arguments that may occur with their mom.
+There is no scientifically engineered platform for practicing situations like coming home late, asking for permission, defending bad decisions, or explaining suspicious behavior.
+Humanity somehow survived without one, but we decided this was an unacceptable gap in technology.
 
 ### The Solution (that nobody asked for)
-A full-fledged simulation arena where users face off against an AI Mom equipped with six distinct archetypes (Calm, Suspicious, Strict, Angry, Logical, and Final Boss). Mom dynamically retorts with classic Indian household ultimata ("Because I said so!", Sharma ji's son comparisons, 2022 dal-spilling incidents) while modulating voice pitch, anger meters, and calculating your final Survival Score.
+
+An AI-powered Mom Argument Simulator that generates random real-world situations and forces users to navigate them through natural conversation with an AI Mom.
+The AI tracks hidden variables such as anger, patience, suspicion, trust, back-answering risk, and escalation, while dynamically adapting its responses based on what the user says.
+After every argument, the system provides an unnecessarily detailed Argument Report, identifies the user's strengths and weaknesses, and uses them to generate increasingly difficult situations for future training.
 
 ---
 
@@ -62,13 +72,13 @@ For Software:
 ![Scenario & Personality Selector](screenshots/scenario_selector.png)
 *Randomized real-world crisis generator (e.g., 'Caught on Phone at 2:30 AM') with customizable maternal archetypes ranging from 'Suspicious Mom' to 'Final Boss Mom Level 99'.*
 
-#### 3. Post-Argument Debrief & Survival Verdict
+#### 3. Chat section
+![Argument Analyzer](screenshots/chat.png)
+*Dispute categorization engine sorting everyday arguments into Curfew, Screentime, Room Cleanliness, and Academic Grievances.*
+
+#### 4. Post-Argument Debrief & Survival Verdict
 ![Post-Argument Debrief](screenshots/debrief_verdict.png)
 *The post-mortem scorecard evaluating survival percentage, logical reasoning, emotional control, and the inevitable 'Complete Maternal Escalation' flying chappal strike.*
-
-#### 4. Bone of Contention & Topic Categorization
-![Argument Analyzer](screenshots/argument_analyzer.png)
-*Dispute categorization engine sorting everyday arguments into Curfew, Screentime, Room Cleanliness, and Academic Grievances.*
 
 ---
 
@@ -95,16 +105,6 @@ flowchart TD
     L --> N[Debrief Scorecard: 0% Chance of Winning Proved]
 ```
 *Flowchart demonstrating user input processing, back-answering classification, procedural sound triggering, and maternal escalation.*
-
----
-
-## Project Demo
-### Video
-- [Demo Video Link Coming Soon]
-*Demonstration of scenario selection, speech interactions, anger meter escalation, and debrief verdict.*
-
-### Additional Demos
-- Open `http://localhost:3000` locally to experience the interactive chappal physics, audio synthesis, and maternal scolding simulator directly.
 
 ---
 
