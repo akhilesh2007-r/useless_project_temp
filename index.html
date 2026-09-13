@@ -457,111 +457,44 @@
             </section>
 
             <!-- ============================================================
-                 VIEW 5: REAL MOM SETUP & TOPIC SELECTOR
-                 ============================================================ -->
-            <section id="viewRealSetup" class="view-section">
-                <div class="real-setup-container">
-                    <div class="setup-header">
-                        <span class="setup-badge" style="color: #ff3366; background: rgba(255, 51, 102, 0.1); border-color: rgba(255, 51, 102, 0.3);">
-                            🟢 THE ACTUAL BATTLEFIELD
-                        </span>
-                        <h2 class="setup-title">REAL MOM ARGUMENT ANALYZER</h2>
-                        <p class="setup-subtitle">The Mom is real. The conversation is real. The technology is unnecessarily complicated.</p>
-                    </div>
-
-                    <!-- Topic Selector -->
-                    <div class="scenario-card">
-                        <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: white; margin-bottom: 0.75rem;">
-                            🎯 WHAT ARE YOU ABOUT TO ARGUE ABOUT?
-                        </div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-                            Select the primary bone of contention before entering maternal jurisdiction:
-                        </p>
-                        
-                        <div class="topic-chips-grid" id="realTopicChips">
-                            <span class="topic-chip active" data-topic="Going Out / Curfew">🌙 Going Out / Curfew</span>
-                            <span class="topic-chip" data-topic="Phone Usage & Screentime">📱 Phone & Screentime</span>
-                            <span class="topic-chip" data-topic="Room Cleanliness & Chores">🧹 Room Cleanliness</span>
-                            <span class="topic-chip" data-topic="Academic Marks & Studying">📚 Marks & Studying</span>
-                            <span class="topic-chip" data-topic="Online Shopping & Expenses">💸 Shopping & Expenses</span>
-                            <span class="topic-chip" data-topic="Waking Up Late & Sleep">⏰ Waking Up Late</span>
-                        </div>
-
-                        <!-- Mode Selector -->
-                        <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: white; margin-bottom: 0.75rem;">
-                            🎙️ CONVERSATION CAPTURE PROTOCOL
-                        </div>
-                        <div class="mode-cards-row">
-                            <div class="mode-card active" id="realModeLive">
-                                <div style="font-weight: 800; color: white; margin-bottom: 0.25rem;">🎤 Continuous Live Diarization</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.45;">
-                                    Uses live microphone speech recognition to log statements and speaker turns automatically.
-                                </div>
-                            </div>
-                            <div class="mode-card" id="realModeManual">
-                                <div style="font-weight: 800; color: white; margin-bottom: 0.25rem;">⌨️ Interactive Turn-by-Turn</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.45;">
-                                    Fast one-tap [YOU] / [MOM] toggle buttons to record real statements as they occur.
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Actions -->
-                        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                            <button id="btnBackToHomeFromRealSetup" class="btn btn-outline" style="padding: 0.9rem 1.75rem;">
-                                ⬅️ Back to Home
-                            </button>
-                            <button id="btnEnterRealArena" class="btn btn-primary" style="padding: 0.9rem 2.5rem; font-size: 1.15rem; font-weight: 800;">
-                                🚨 ENTER BATTLEFIELD NOW
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============================================================
-                 VIEW 6: REAL MOM BATTLE STATION (3-COLUMN LIVE SURVEILLANCE)
+                 VIEW 5: REAL MOM VOICE CHAT & THREAT SURVEILLANCE
                  ============================================================ -->
             <section id="viewRealArena" class="view-section">
-                <div class="ai-arena-container" style="max-width: 1350px;">
+                <div class="real-arena-container">
                     
-                    <!-- Top Bar -->
+                    <!-- Top Bar: Timer, Speaking Balance, and End Button -->
                     <div class="real-arena-topbar">
                         <div class="live-rec-badge">
                             <div class="rec-dot"></div>
                             <span id="realTimerDisplay">LIVE: 00m 00s</span>
                         </div>
 
-                        <div class="speaking-distribution-bar">
+                        <div class="speaking-distribution-bar" style="flex: 1; max-width: 440px;">
                             <div class="distribution-header">
-                                <span style="color: #ff3366; font-weight: 700;">MOM: <span id="distMomVal">50%</span></span>
-                                <span style="color: #38bdf8; font-weight: 700;">YOU: <span id="distYouVal">50%</span></span>
+                                <span style="color: #ff3366; font-weight: 800;">👩🏻 MOM: <span id="distMomVal">50%</span></span>
+                                <span style="color: #38bdf8; font-weight: 800;">🧑 YOU: <span id="distYouVal">50%</span></span>
                             </div>
                             <div class="distribution-track">
                                 <div id="distMomFill" class="distribution-mom-fill" style="width: 50%;"></div>
                             </div>
                         </div>
 
-                        <div style="font-size: 0.85rem; font-family: var(--font-mono); color: var(--text-muted);">
-                            Topic: <span id="realActiveTopicBadge" style="color: white; font-weight: 700;">Going Out</span>
-                        </div>
-
-                        <button id="btnFinishRealArgument" class="btn btn-primary btn-sm" style="padding: 0.5rem 1.25rem;">
-                            ⚖️ End & Calculate Verdict
+                        <button id="btnFinishRealArgument" class="btn btn-primary" style="padding: 0.65rem 1.4rem; font-weight: 800;">
+                            🛑 End & See Verdict 🩴
                         </button>
                     </div>
 
-                    <!-- 3-Column Battlefield Grid -->
-                    <div class="real-battle-station-grid">
+                    <!-- 2-Column Fun Layout: Voice Chat (Left) & Risk Indicators (Right) -->
+                    <div class="real-arena-grid">
                         
-                        <!-- Column 1: Live Diarized Conversation Feed -->
-                        <div class="station-column">
-                            <div class="column-header">
-                                <span>🎙️ LIVE TRANSCRIPT DIARIZATION</span>
-                                <span id="realTurnsCountBadge" style="font-size: 0.72rem; font-family: var(--font-mono); color: #38bdf8;">0 turns</span>
+                        <!-- Column 1: Live Voice & Text Chat Feed -->
+                        <div class="real-chat-panel">
+                            <div class="panel-header">
+                                <span class="panel-title">🎙️ LIVE REAL MOM CONVERSATION</span>
+                                <span id="realTurnsCountBadge" class="panel-badge">0 statements logged</span>
                             </div>
 
-                            <!-- Active Speaker Toggle -->
+                            <!-- Active Speaker Toggle Buttons -->
                             <div class="speaker-toggle-row">
                                 <button id="btnSpeakerYou" class="speaker-btn active-you">
                                     🧑 You Speaking
@@ -573,105 +506,97 @@
 
                             <!-- Chat Feed -->
                             <div id="realChatFeed" class="real-chat-feed">
-                                <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-top: 3rem;">
-                                    Awaiting live conversation input...<br>
-                                    <span style="font-size: 0.75rem; color: #94a3b8;">Click [🧑 You] or [👩🏻 Mom], then type or speak.</span>
+                                <div class="chat-placeholder">
+                                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem; animation: pulse 2s infinite;">🎙️</div>
+                                    <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Voice Chat is Ready!</div>
+                                    <div style="font-size: 0.85rem; color: #94a3b8; max-width: 320px; line-height: 1.5;">
+                                        Tap <strong>[🧑 You]</strong> or <strong>[👩🏻 Mom]</strong>, then speak or type. You can also click the quick phrases below!
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Quick Argument Chips -->
+                            <!-- Fun Quick Phrases -->
                             <div class="quick-chips-row">
                                 <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="Can I please go outside with friends?">🙋 Can I go outside?</span>
-                                <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="You have not cleaned your room yet.">🧹 Clean your room</span>
-                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="Everyone else is allowed to go.">👥 Everyone is going</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="Everyone else in my class is going!">👥 Everyone is going</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="YOU" data-text="I will clean my room tomorrow I promise!">🧹 Clean room later</span>
                                 <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="If everyone jumps in a well will you jump?">🌀 Well-jumping</span>
                                 <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="Because I said so! That is why!">🚨 Because I said so</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="Look at Sharma ji's son, he never goes out!">📊 Sharma ji's son</span>
+                                <span class="quick-chip real-quick-chip" data-speaker="MOM" data-text="You are on that phone 24 hours all day!">⏳ Phone 24 hours</span>
                             </div>
 
-                            <!-- Input Bar -->
+                            <!-- Chat Input Bar -->
                             <div class="chat-input-bar">
-                                <input type="text" id="realInputText" class="chat-input-box" placeholder="Type what was said..." autocomplete="off">
-                                <button id="btnRealMic" class="btn-mic" title="Toggle Mic Listening">
+                                <input type="text" id="realInputText" class="chat-input-box" placeholder="Type or click the mic to speak..." autocomplete="off">
+                                <button id="btnRealMic" class="btn-mic" title="Click to Talk / Toggle Microphone">
                                     🎙️
                                 </button>
-                                <button id="btnRealSend" class="btn btn-primary" style="padding: 0.65rem 1.25rem;">
+                                <button id="btnRealSend" class="btn btn-primary" style="padding: 0.65rem 1.4rem; font-weight: 700;">
                                     Log
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Column 2: Live Dual Anger Graph & Argument Quality -->
-                        <div class="station-column">
-                            <div class="column-header">
-                                <span>📈 DUAL ANGER CURVE & QUALITY</span>
-                                <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #f43f5e;">REAL-TIME</span>
-                            </div>
+                        <!-- Column 2: Fun Risk Indicators & Maternal Danger -->
+                        <div class="real-risk-panel">
+                            
+                            <!-- 🩴 THE CHAPPAL THREAT METER -->
+                            <div class="risk-card chappal-threat-card">
+                                <div class="risk-card-header">
+                                    <span>🩴 CHAPPAL THREAT LEVEL</span>
+                                    <span id="threatPercentText" class="threat-pct-badge">15% RISK</span>
+                                </div>
 
-                            <!-- Canvas Container -->
-                            <div class="canvas-wrapper">
-                                <canvas id="canvasDualAnger" class="dual-anger-canvas" width="440" height="180"></canvas>
-                                <div style="font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-muted); margin-top: 0.4rem;">
-                                    Continuous emotional tracking • Yellow rings indicate Escalation Spikes
-                                </div>
-                            </div>
+                                <div class="chappal-threat-body">
+                                    <!-- Animated Slipper Avatar -->
+                                    <div id="realThreatSlipperBox" class="threat-slipper-box">
+                                        <div id="realThreatSlipperIcon" class="threat-slipper-icon">🩴</div>
+                                    </div>
 
-                            <!-- Argument Quality Grid -->
-                            <div class="quality-metrics-grid">
-                                <div class="quality-card">
-                                    <div id="metricLogicVal" class="quality-val" style="color: #38bdf8;">82%</div>
-                                    <div class="quality-lbl">Your Logic Score</div>
-                                </div>
-                                <div class="quality-card">
-                                    <div id="metricEmotionVal" class="quality-val" style="color: #f43f5e;">74%</div>
-                                    <div class="quality-lbl">Emotional Intensity</div>
-                                </div>
-                                <div class="quality-card">
-                                    <div id="metricResistanceVal" class="quality-val" style="color: #f59e0b;">96%</div>
-                                    <div class="quality-lbl">Mom Resistance</div>
-                                </div>
-                                <div class="quality-card">
-                                    <div id="metricInterruptVal" class="quality-val" style="color: #a855f7;">0</div>
-                                    <div class="quality-lbl">Interruptions</div>
+                                    <!-- Status Message -->
+                                    <div id="threatStatusTitle" class="threat-status-title" style="color: #4ade80;">
+                                        🟢 LEVEL 1: PEACEFUL DIALOGUE
+                                    </div>
+                                    <div id="threatStatusDesc" class="threat-status-desc">
+                                        Mom is relatively calm. Watch your tone.
+                                    </div>
+
+                                    <!-- Threat Progress Bar -->
+                                    <div class="meter-track" style="height: 12px; margin-top: 0.75rem; width: 100%;">
+                                        <div id="threatProgressFill" class="meter-fill" style="width: 15%; background: linear-gradient(90deg, #4ade80, #f59e0b);"></div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Real-Time Win Probability -->
-                            <div style="padding: 1rem 1.25rem; background: rgba(0, 0, 0, 0.2); border-top: 1px solid var(--border-glass);">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-family: var(--font-mono); margin-bottom: 0.4rem;">
-                                    <span style="color: #38bdf8;">YOUR WIN PROBABILITY: <strong id="realProbYou">0.1%</strong></span>
-                                    <span style="color: #ff3366;">MOM WIN PROBABILITY: <strong id="realProbMom">99.9%</strong></span>
+                            <!-- 🚨 BACK-ANSWERING DANGER -->
+                            <div class="risk-card back-answer-card">
+                                <div class="risk-card-header">
+                                    <span>🚨 BACK-ANSWERING DANGER</span>
+                                    <span id="realBackAnswerVal" style="color: #f87171; font-weight: 800; font-family: var(--font-mono);">0%</span>
                                 </div>
-                                <div style="height: 10px; background: #ff3366; border-radius: 5px; overflow: hidden; display: flex;">
-                                    <div id="probYouFill" style="width: 1%; background: #38bdf8; height: 100%;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Column 3: Detection Radar & Historical Crimes -->
-                        <div class="station-column">
-                            <div class="column-header">
-                                <span>🚨 DETECTION RADAR</span>
-                                <span style="font-size: 0.72rem; font-family: var(--font-mono); color: #facc15;">RADAR ACTIVE</span>
-                            </div>
-
-                            <!-- Back-Answering Risk Meter -->
-                            <div style="padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border-glass); background: rgba(0, 0, 0, 0.15);">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 0.3rem;">
-                                    <span>BACK-ANSWERING RISK</span>
-                                    <span id="realBackAnswerVal" style="color: #f87171; font-weight: 700;">0%</span>
-                                </div>
-                                <div class="meter-track">
+                                <div class="meter-track" style="margin-bottom: 0.65rem;">
                                     <div id="realBackAnswerFill" class="meter-fill meter-backanswer" style="width: 0%;"></div>
                                 </div>
-                            </div>
-
-                            <!-- Live Radar Alerts Feed -->
-                            <div id="realRadarAlerts" class="radar-alerts-container">
-                                <div class="radar-alert-card" style="border-left-color: #38bdf8; background: rgba(56, 189, 248, 0.08);">
-                                    <div class="radar-alert-title" style="color: #38bdf8;">📡 ACOUSTIC SURVEILLANCE PRIMED</div>
-                                    <div class="radar-alert-desc">Listening for topic deflections, well-jumping protocols, and historical incident retrievals.</div>
+                                <div class="risk-tip">
+                                    ⚠️ <strong>Warning:</strong> Explaining logic or stating facts is classified by Indian Mothers as Back-Answering.
                                 </div>
                             </div>
+
+                            <!-- ⚡ MOM LOGIC & HISTORICAL CRIMES RADAR -->
+                            <div class="risk-card radar-feed-card">
+                                <div class="risk-card-header">
+                                    <span>⚡ MOM LOGIC ALERTS</span>
+                                    <span style="font-size: 0.72rem; color: #fbbf24; font-family: var(--font-mono);">RADAR ON</span>
+                                </div>
+                                <div id="realRadarAlerts" class="real-radar-feed">
+                                    <div class="radar-alert-card" style="border-left-color: #38bdf8; background: rgba(56, 189, 248, 0.08);">
+                                        <div class="radar-alert-title" style="color: #38bdf8;">📡 RADAR ACTIVE</div>
+                                        <div class="radar-alert-desc">Listening for "Because I said so", well-jumping, Sharma ji comparisons, and past crimes.</div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -1184,7 +1109,7 @@
                     if (ctx.state === 'suspended') ctx.resume();
                     playAuthenticChappalSlap(ctx.currentTime, 1.3, 1.0);
                 }
-                switchView('viewRealSetup');
+                startRealVoiceChat();
             });
         }
 
@@ -1761,143 +1686,94 @@
         }
 
         // ============================================================
-        // REAL MOM CONTROLLER & SURVEILLANCE STATION
+        // REAL MOM VOICE CHAT & SURVEILLANCE CONTROLLER
         // ============================================================
-        let selectedRealTopic = "Going Out";
-        let selectedCaptureMode = "mic";
         let activeRealSpeaker = "YOU";
         let realTimerInterval = null;
         let realSpeechRecognizer = null;
         let isRealListening = false;
 
-        // 1. Real Setup: Topic Selection
-        const realTopicChips = document.querySelectorAll('#realTopicChips .topic-chip');
-        realTopicChips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                realTopicChips.forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-                selectedRealTopic = chip.getAttribute('data-topic') || chip.textContent.trim();
-            });
-        });
+        // 1. Start Real Voice Chat Directly from Home Button
+        function startRealVoiceChat() {
+            // Start Real Mom Engine
+            window.realMomEngine.start("Real Argument");
 
-        // 2. Real Setup: Mode Selection
-        const modeCardMic = document.getElementById('realModeMic');
-        const modeCardManual = document.getElementById('realModeManual');
-        if (modeCardMic && modeCardManual) {
-            modeCardMic.addEventListener('click', () => {
-                modeCardMic.classList.add('selected');
-                modeCardManual.classList.remove('selected');
-                selectedCaptureMode = 'mic';
-            });
-            modeCardManual.addEventListener('click', () => {
-                modeCardManual.classList.add('selected');
-                modeCardMic.classList.remove('selected');
-                selectedCaptureMode = 'manual';
-            });
-        }
+            const timerDisplay = document.getElementById('realTimerDisplay');
+            if (timerDisplay) timerDisplay.textContent = 'LIVE: 00m 00s';
 
-        // 3. Back to Home from Real Setup
-        const btnBackToHomeFromRealSetup = document.getElementById('btnBackToHomeFromRealSetup');
-        if (btnBackToHomeFromRealSetup) {
-            btnBackToHomeFromRealSetup.addEventListener('click', () => {
-                switchView('viewLanding');
-            });
-        }
+            const distMomVal = document.getElementById('distMomVal');
+            const distYouVal = document.getElementById('distYouVal');
+            const distMomFill = document.getElementById('distMomFill');
+            if (distMomVal) distMomVal.textContent = '50%';
+            if (distYouVal) distYouVal.textContent = '50%';
+            if (distMomFill) distMomFill.style.width = '50%';
 
-        // 4. Enter Battlefield Button
-        const btnEnterRealArena = document.getElementById('btnEnterRealArena');
-        if (btnEnterRealArena) {
-            btnEnterRealArena.addEventListener('click', () => {
-                const ctx = getAudioContext();
-                if (ctx && ctx.state === 'suspended') ctx.resume();
-                playAuthenticChappalSlap(ctx ? ctx.currentTime : 0, 1.2, 1.0);
+            const turnsBadge = document.getElementById('realTurnsCountBadge');
+            if (turnsBadge) turnsBadge.textContent = '0 statements logged';
 
-                // Start Real Mom Engine
-                window.realMomEngine.start(selectedRealTopic);
+            const threatPct = document.getElementById('threatPercentText');
+            const threatTitle = document.getElementById('threatStatusTitle');
+            const threatDesc = document.getElementById('threatStatusDesc');
+            const threatFill = document.getElementById('threatProgressFill');
+            const slipperIcon = document.getElementById('realThreatSlipperIcon');
 
-                // Reset Arena UI
-                const activeTopicBadge = document.getElementById('realActiveTopicBadge');
-                if (activeTopicBadge) activeTopicBadge.textContent = selectedRealTopic;
+            if (threatPct) threatPct.textContent = '15% RISK';
+            if (threatTitle) {
+                threatTitle.textContent = '🟢 LEVEL 1: PEACEFUL DIALOGUE';
+                threatTitle.style.color = '#4ade80';
+            }
+            if (threatDesc) threatDesc.textContent = 'Mom is relatively calm. Watch your tone.';
+            if (threatFill) {
+                threatFill.style.width = '15%';
+                threatFill.style.background = 'linear-gradient(90deg, #4ade80, #86efac)';
+            }
+            if (slipperIcon) slipperIcon.classList.remove('shaking');
 
-                const timerDisplay = document.getElementById('realTimerDisplay');
-                if (timerDisplay) timerDisplay.textContent = 'LIVE: 00m 00s';
+            const backVal = document.getElementById('realBackAnswerVal');
+            const backFill = document.getElementById('realBackAnswerFill');
+            if (backVal) backVal.textContent = '0%';
+            if (backFill) backFill.style.width = '0%';
 
-                const distMomVal = document.getElementById('distMomVal');
-                const distYouVal = document.getElementById('distYouVal');
-                const distMomFill = document.getElementById('distMomFill');
-                if (distMomVal) distMomVal.textContent = '50%';
-                if (distYouVal) distYouVal.textContent = '50%';
-                if (distMomFill) distMomFill.style.width = '50%';
-
-                const turnsBadge = document.getElementById('realTurnsCountBadge');
-                if (turnsBadge) turnsBadge.textContent = '0 turns';
-
-                const metricLogic = document.getElementById('metricLogicVal');
-                const metricEmotion = document.getElementById('metricEmotionVal');
-                const metricResist = document.getElementById('metricResistanceVal');
-                const metricInterrupt = document.getElementById('metricInterruptVal');
-                if (metricLogic) metricLogic.textContent = '75%';
-                if (metricEmotion) metricEmotion.textContent = '40%';
-                if (metricResist) metricResist.textContent = '70%';
-                if (metricInterrupt) metricInterrupt.textContent = '0';
-
-                const probYou = document.getElementById('realProbYou');
-                const probMom = document.getElementById('realProbMom');
-                const probYouFill = document.getElementById('probYouFill');
-                if (probYou) probYou.textContent = '0.1%';
-                if (probMom) probMom.textContent = '99.9%';
-                if (probYouFill) probYouFill.style.width = '1%';
-
-                const backVal = document.getElementById('realBackAnswerVal');
-                const backFill = document.getElementById('realBackAnswerFill');
-                if (backVal) backVal.textContent = '0%';
-                if (backFill) backFill.style.width = '0%';
-
-                const chatFeed = document.getElementById('realChatFeed');
-                if (chatFeed) {
-                    chatFeed.innerHTML = `
-                        <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-top: 3rem;">
-                            Live conversation logging active.<br>
-                            <span style="font-size: 0.75rem; color: #94a3b8;">Click [🧑 You] or [👩🏻 Mom], then type, use quick chips, or speak.</span>
+            const chatFeed = document.getElementById('realChatFeed');
+            if (chatFeed) {
+                chatFeed.innerHTML = `
+                    <div class="chat-placeholder">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem; animation: pulse 2s infinite;">🎙️</div>
+                        <div style="font-weight: 800; color: white; margin-bottom: 0.25rem; font-size: 1.05rem;">Voice Chat is Ready!</div>
+                        <div style="font-size: 0.85rem; color: #94a3b8; max-width: 320px; line-height: 1.5;">
+                            Tap <strong>[🧑 You]</strong> or <strong>[👩🏻 Mom]</strong>, then speak or type. You can also click the quick phrases below!
                         </div>
-                    `;
+                    </div>
+                `;
+            }
+
+            const radarAlerts = document.getElementById('realRadarAlerts');
+            if (radarAlerts) {
+                radarAlerts.innerHTML = `
+                    <div class="radar-alert-card" style="border-left-color: #38bdf8; background: rgba(56, 189, 248, 0.08);">
+                        <div class="radar-alert-title" style="color: #38bdf8;">📡 RADAR ACTIVE</div>
+                        <div class="radar-alert-desc">Listening for "Because I said so", well-jumping, Sharma ji comparisons, and past crimes.</div>
+                    </div>
+                `;
+            }
+
+            // Start Timer ticker
+            if (realTimerInterval) clearInterval(realTimerInterval);
+            realTimerInterval = setInterval(() => {
+                const t = document.getElementById('realTimerDisplay');
+                if (t && window.realMomEngine) {
+                    t.textContent = 'LIVE: ' + window.realMomEngine.getFormattedTime();
                 }
+            }, 1000);
 
-                const radarAlerts = document.getElementById('realRadarAlerts');
-                if (radarAlerts) {
-                    radarAlerts.innerHTML = `
-                        <div class="radar-alert-card" style="border-left-color: #38bdf8; background: rgba(56, 189, 248, 0.08);">
-                            <div class="radar-alert-title" style="color: #38bdf8;">📡 ACOUSTIC SURVEILLANCE PRIMED</div>
-                            <div class="radar-alert-desc">Listening for topic deflections, well-jumping protocols, and historical incident retrievals.</div>
-                        </div>
-                    `;
-                }
+            // Switch to Arena directly!
+            switchView('viewRealArena');
 
-                // Initial Canvas render
-                const canvas = document.getElementById('canvasDualAnger');
-                if (canvas && window.realMomCharts) {
-                    window.realMomCharts.drawDualAnger(canvas, []);
-                }
-
-                // Start Timer ticker
-                if (realTimerInterval) clearInterval(realTimerInterval);
-                realTimerInterval = setInterval(() => {
-                    const t = document.getElementById('realTimerDisplay');
-                    if (t && window.realMomEngine) {
-                        t.textContent = 'LIVE: ' + window.realMomEngine.getFormattedTime();
-                    }
-                }, 1000);
-
-                switchView('viewRealArena');
-
-                // If mic capture selected, trigger mic listener
-                if (selectedCaptureMode === 'mic') {
-                    startRealSpeechRecognition();
-                }
-            });
+            // Automatically attempt speech recognition
+            startRealSpeechRecognition();
         }
 
-        // 5. Speaker Toggle [YOU] vs [MOM]
+        // 2. Speaker Toggle [YOU] vs [MOM]
         const btnSpeakerYou = document.getElementById('btnSpeakerYou');
         const btnSpeakerMom = document.getElementById('btnSpeakerMom');
 
@@ -1927,7 +1803,7 @@
             btnSpeakerMom.addEventListener('click', () => setRealSpeaker('MOM'));
         }
 
-        // 6. Logging a Turn
+        // 3. Logging a Turn
         function logRealTurn(speaker, text) {
             if (!text || !text.trim()) return;
             const turn = window.realMomEngine.addTurn(speaker, text.trim());
@@ -1948,7 +1824,7 @@
                     badgesHtml += `<span class="real-bubble-badge badge-interruption">⚠️ Interruption Recorded</span>`;
                 }
                 if (turn.backAnswer && turn.backAnswer.detected) {
-                    badgesHtml += `<span class="real-bubble-badge badge-backanswer">🚨 BACK-ANSWER DETECTED (+18% Anger Spike)</span>`;
+                    badgesHtml += `<span class="real-bubble-badge badge-backanswer">🚨 BACK-ANSWER DETECTED (+20% Chappal Risk)</span>`;
                 }
                 if (turn.momLogic && turn.momLogic.detected) {
                     badgesHtml += `<span class="real-bubble-badge badge-momlogic">${turn.momLogic.title}</span>`;
@@ -1981,37 +1857,72 @@
 
             // Update Turns badge
             const turnsBadge = document.getElementById('realTurnsCountBadge');
-            if (turnsBadge) turnsBadge.textContent = `${window.realMomEngine.history.length} turns`;
+            if (turnsBadge) turnsBadge.textContent = `${window.realMomEngine.history.length} statements logged`;
 
-            // Update Metrics
-            const logicScore = Math.min(95, Math.max(30, 75 + (window.realMomEngine.history.filter(h => h.speaker === 'YOU').length * 2) - (window.realMomEngine.interruptions * 4)));
-            const emotionScore = Math.round((window.realMomEngine.momAnger + window.realMomEngine.youAnger) / 2);
-
-            const metricLogic = document.getElementById('metricLogicVal');
-            const metricEmotion = document.getElementById('metricEmotionVal');
-            const metricResist = document.getElementById('metricResistanceVal');
-            const metricInterrupt = document.getElementById('metricInterruptVal');
-            if (metricLogic) metricLogic.textContent = `${logicScore}%`;
-            if (metricEmotion) metricEmotion.textContent = `${emotionScore}%`;
-            if (metricResist) metricResist.textContent = `${window.realMomEngine.momAnger}%`;
-            if (metricInterrupt) metricInterrupt.textContent = `${window.realMomEngine.interruptions}`;
-
-            // Win Probabilities
-            const probYouVal = logicScore > 85 ? '0.2%' : '0.1%';
-            const probMomVal = logicScore > 85 ? '99.8%' : '99.9%';
-            const probYou = document.getElementById('realProbYou');
-            const probMom = document.getElementById('realProbMom');
-            const probYouFill = document.getElementById('probYouFill');
-            if (probYou) probYou.textContent = probYouVal;
-            if (probMom) probMom.textContent = probMomVal;
-            if (probYouFill) probYouFill.style.width = logicScore > 85 ? '2%' : '1%';
-
-            // Back-Answering Risk Meter
+            // Update Back-Answering Risk Meter
             const backVal = document.getElementById('realBackAnswerVal');
             const backFill = document.getElementById('realBackAnswerFill');
             const currentRisk = turn.backAnswer && turn.backAnswer.detected ? Math.min(100, 60 + turn.backAnswer.riskScore) : Math.max(10, Math.round(window.realMomEngine.momAnger * 0.4));
             if (backVal) backVal.textContent = `${currentRisk}%`;
             if (backFill) backFill.style.width = `${currentRisk}%`;
+
+            // 🩴 UPDATE CHAPPAL THREAT METER
+            let threat = Math.min(100, Math.max(15, window.realMomEngine.momAnger));
+            if (turn.backAnswer && turn.backAnswer.detected) {
+                threat = Math.min(100, threat + 20);
+            }
+
+            const threatPct = document.getElementById('threatPercentText');
+            const threatTitle = document.getElementById('threatStatusTitle');
+            const threatDesc = document.getElementById('threatStatusDesc');
+            const threatFill = document.getElementById('threatProgressFill');
+            const slipperIcon = document.getElementById('realThreatSlipperIcon');
+
+            if (threatPct) threatPct.textContent = `${threat}% RISK`;
+            if (threatFill) {
+                threatFill.style.width = `${threat}%`;
+                if (threat < 35) {
+                    threatFill.style.background = 'linear-gradient(90deg, #4ade80, #86efac)';
+                } else if (threat < 65) {
+                    threatFill.style.background = 'linear-gradient(90deg, #f59e0b, #fbbf24)';
+                } else if (threat < 85) {
+                    threatFill.style.background = 'linear-gradient(90deg, #f97316, #ef4444)';
+                } else {
+                    threatFill.style.background = 'linear-gradient(90deg, #ef4444, #ff0055)';
+                }
+            }
+
+            if (threatTitle && threatDesc) {
+                if (threat < 35) {
+                    threatTitle.textContent = '🟢 LEVEL 1: PEACEFUL DIALOGUE';
+                    threatTitle.style.color = '#4ade80';
+                    threatDesc.textContent = 'Mom is relatively calm. Watch your tone.';
+                } else if (threat < 55) {
+                    threatTitle.textContent = '🟡 LEVEL 2: SLIPPER UNHOOKED';
+                    threatTitle.style.color = '#fbbf24';
+                    threatDesc.textContent = 'She reached down and unhooked the strap. Proceed with caution!';
+                } else if (threat < 75) {
+                    threatTitle.textContent = '🟠 LEVEL 3: SLIPPER IN HAND';
+                    threatTitle.style.color = '#f97316';
+                    threatDesc.textContent = 'Weapon held at 45-degree tactical angle! Danger level elevated!';
+                } else if (threat < 90) {
+                    threatTitle.textContent = '🔴 LEVEL 4: AIRBORNE SLIPPER! 🩴💨';
+                    threatTitle.style.color = '#ef4444';
+                    threatDesc.textContent = 'BRACE FOR IMPACT! Chappal in flight trajectory!';
+                } else {
+                    threatTitle.textContent = '💥 LEVEL 5: CRITICAL IMPACT ZONE!';
+                    threatTitle.style.color = '#ff0055';
+                    threatDesc.textContent = 'DIRECT IMPACT! All logic rejected by supreme maternal authority!';
+                }
+            }
+
+            if (slipperIcon) {
+                if (threat >= 65) {
+                    slipperIcon.classList.add('shaking');
+                } else {
+                    slipperIcon.classList.remove('shaking');
+                }
+            }
 
             // Append to Radar Alerts Feed
             const radarAlerts = document.getElementById('realRadarAlerts');
@@ -2024,7 +1935,7 @@
                     alertCard.style.background = 'rgba(239, 68, 68, 0.12)';
                     alertCard.innerHTML = `
                         <div class="radar-alert-title" style="color: #ef4444;">🚨 BACK-ANSWER TRIGGER ACTIVATED</div>
-                        <div class="radar-alert-desc">Phrase: "<em>${escapeHTML(turn.backAnswer.triggers[0].phrase)}</em>". Maternal defense triggered (+18% anger). Physical slipper intervention risk elevated.</div>
+                        <div class="radar-alert-desc">Phrase: "<em>${escapeHTML(turn.backAnswer.triggers[0].phrase)}</em>". Maternal defense triggered (+20% Chappal Threat).</div>
                     `;
                 } else if (turn.momLogic && turn.momLogic.detected) {
                     alertCard = document.createElement('div');
@@ -2033,7 +1944,7 @@
                     alertCard.style.background = 'rgba(245, 158, 11, 0.12)';
                     alertCard.innerHTML = `
                         <div class="radar-alert-title" style="color: #fbbf24;">${turn.momLogic.title}</div>
-                        <div class="radar-alert-desc">${turn.momLogic.desc} Counter-argument effectiveness: ${turn.momLogic.counterEffectiveness}.</div>
+                        <div class="radar-alert-desc">${turn.momLogic.desc} Counter-effectiveness: ${turn.momLogic.counterEffectiveness}.</div>
                     `;
                 } else if (turn.matchedCrime) {
                     alertCard = document.createElement('div');
@@ -2044,30 +1955,14 @@
                         <div class="radar-alert-title" style="color: #c084fc;">📂 HISTORICAL ARCHIVE QUERIED (${turn.matchedCrime.year})</div>
                         <div class="radar-alert-desc">Mom weaponized incident: "${escapeHTML(turn.matchedCrime.title)}". Factual statute of limitations does not apply.</div>
                     `;
-                } else if (turn.topicDeflection) {
-                    alertCard = document.createElement('div');
-                    alertCard.className = 'radar-alert-card';
-                    alertCard.style.borderLeftColor = '#38bdf8';
-                    alertCard.style.background = 'rgba(56, 189, 248, 0.1)';
-                    alertCard.innerHTML = `
-                        <div class="radar-alert-title" style="color: #38bdf8;">🔄 TOPIC DEFLECTION MANEUVER</div>
-                        <div class="radar-alert-desc">Argument steered away from "${escapeHTML(window.realMomEngine.activeTopic)}" into domestic cleanliness violations.</div>
-                    `;
                 }
 
                 if (alertCard) {
                     radarAlerts.insertBefore(alertCard, radarAlerts.firstChild);
-                    // keep max 6 alerts
-                    while (radarAlerts.children.length > 6) {
+                    while (radarAlerts.children.length > 5) {
                         radarAlerts.removeChild(radarAlerts.lastChild);
                     }
                 }
-            }
-
-            // Redraw Dual Anger Canvas
-            const canvas = document.getElementById('canvasDualAnger');
-            if (canvas && window.realMomCharts) {
-                window.realMomCharts.drawDualAnger(canvas, window.realMomEngine.history);
             }
 
             // Audio reaction
@@ -2075,13 +1970,13 @@
             if (ctx) {
                 if (turn.backAnswer && turn.backAnswer.detected) {
                     playAuthenticChappalSlap(ctx.currentTime, 1.4, 0.85);
-                } else if (turn.momAnger >= 80) {
+                } else if (threat >= 75) {
                     playAuthenticChappalSlap(ctx.currentTime, 1.1, 1.1);
                 }
             }
         }
 
-        // 7. Input Text Send & Enter Key
+        // 4. Input Text Send & Enter Key
         const realInputText = document.getElementById('realInputText');
         const btnRealSend = document.getElementById('btnRealSend');
 
@@ -2106,7 +2001,7 @@
             });
         }
 
-        // 8. Quick Chips Click
+        // 5. Quick Chips Click
         document.querySelectorAll('.real-quick-chip').forEach(chip => {
             chip.addEventListener('click', () => {
                 const speaker = chip.getAttribute('data-speaker') || activeRealSpeaker;
@@ -2116,7 +2011,7 @@
             });
         });
 
-        // 9. Speech Recognition for Live Real Argument Listening
+        // 6. Speech Recognition for Live Real Argument Listening
         const btnRealMic = document.getElementById('btnRealMic');
 
         function startRealSpeechRecognition() {
@@ -2150,7 +2045,6 @@
                 if (btnRealMic) btnRealMic.classList.remove('listening');
             };
             realSpeechRecognizer.onend = () => {
-                // If arena is still active, restart listening seamlessly
                 const arena = document.getElementById('viewRealArena');
                 if (arena && arena.classList.contains('active') && isRealListening) {
                     try { realSpeechRecognizer.start(); } catch(e) {}
@@ -2185,7 +2079,7 @@
             });
         }
 
-        // 10. Finish & Calculate Verdict Button
+        // 7. Finish & Calculate Verdict Button
         const btnFinishRealArgument = document.getElementById('btnFinishRealArgument');
         if (btnFinishRealArgument) {
             btnFinishRealArgument.addEventListener('click', () => {
@@ -2277,7 +2171,7 @@
             });
         }
 
-        // 11. Real Debrief Buttons: Train in AI Mode & Return Home
+        // 8. Real Debrief Buttons: Train in AI Mode & Return Home
         const btnRealTrainAiMode = document.getElementById('btnRealTrainAiMode');
         const btnRealBackHome = document.getElementById('btnRealBackHome');
 
